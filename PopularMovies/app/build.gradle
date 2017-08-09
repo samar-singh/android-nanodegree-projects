@@ -18,10 +18,16 @@ android {
         }
     }
     buildTypes.each {
-        it.buildConfigField 'String', 'OPEN_WEATHER_MAP_API_KEY', MyTheMovieDBApiToken
+        it.buildConfigField 'String', 'OPEN_WEATHER_MAP_API_KEY', getMyApiKey("moviedbApiKey")
           }
 }
 
+//return a MY API KEY from a properties file.
+def getMyApiKey(String property){
+    Properties properties = new Properties()
+    properties.load(new FileInputStream("moviedb_api_key.txt"))
+    return "\"" + properties.getProperty(property) +"\""
+}
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
