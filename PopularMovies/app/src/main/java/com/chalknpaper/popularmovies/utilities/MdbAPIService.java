@@ -9,6 +9,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by samarsingh on 10/08/17.
@@ -17,7 +18,8 @@ import retrofit2.http.Path;
 public interface MdbAPIService {
     @GET("movie/{sortorder}")
     Call<List<MdbMovieResult>> mdbFetchResults(
-            @Path("sortorder") String sortorder);
+            @Path("sortorder") String sortorder,
+            @Query(value = "api_key", encoded = true) String apikey);
 
             public static final Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("http://api.themoviedb.org/3/")
