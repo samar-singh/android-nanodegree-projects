@@ -143,6 +143,9 @@ public class MainActivity extends AppCompatActivity
 
         Call<List<MdbPageResult>> call = mdbAPIService.mdbFetchResults(moviePreference,
                 com.chalknpaper.popularmovies.BuildConfig.OPEN_WEATHER_MAP_API_KEY);
+        String requesterUrl = mdbAPIService.mdbFetchResults(moviePreference,
+                com.chalknpaper.popularmovies.BuildConfig.OPEN_WEATHER_MAP_API_KEY).request().url().toString();
+        Log.d(this.getClass().getSimpleName(),"requested url: " + requesterUrl);
 
         call.enqueue(new Callback<List<MdbPageResult>>() {
             @Override
