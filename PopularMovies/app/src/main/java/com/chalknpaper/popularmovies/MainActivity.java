@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,12 +15,19 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.chalknpaper.popularmovies.data.MdbPageResult;
 import com.chalknpaper.popularmovies.data.SingleMovieDetails;
+import com.chalknpaper.popularmovies.utilities.MdbAPIService;
 import com.chalknpaper.popularmovies.utilities.MovieJsonUtils;
 import com.chalknpaper.popularmovies.utilities.NetworkUtils;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
         implements MovieAdapter.ListItemClickListener {
@@ -130,7 +138,27 @@ public class MainActivity extends AppCompatActivity
      */
     private void loadMovieData(String moviePreference) {
         showMovieDataView();
-        new FetchMovieTask().execute(moviePreference);
+
+        MdbAPIService mdbAPIService = MdbAPIService.retrofit.create(MdbAPIService.class);
+
+        Call<List<MdbPageResult>> call = mdbAPIService.mdbFetchResults(moviePreference,
+                com.chalknpaper.popularmovies.BuildConfig.OPEN_WEATHER_MAP_API_KEY);
+
+        call.enqueue(new Callback<List<MdbPageResult>>() {
+            @Override
+            public void onResponse(Call<List<MdbPageResult>> call, Response<List<MdbPageResult>> response) {
+
+                Log.d(this.getClass().getSimpleName(),"Retrofit Response received");
+            }
+
+            @Override
+            public void onFailure(Call<List<MdbPageResult>> call, Throwable t) {
+                Log.d(this.getClass().getSimpleName(),t.getMessage());
+            }
+
+        });
+
+ //       new FetchMovieTask().execute(moviePreference);
     }
 
     private void showMovieDataView() {

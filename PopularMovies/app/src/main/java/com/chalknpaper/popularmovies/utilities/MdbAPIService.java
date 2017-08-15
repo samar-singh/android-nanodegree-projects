@@ -1,6 +1,6 @@
 package com.chalknpaper.popularmovies.utilities;
 
-import com.chalknpaper.popularmovies.data.MdbMovieResult;
+import com.chalknpaper.popularmovies.data.MdbPageResult;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import retrofit2.http.Query;
 
 public interface MdbAPIService {
     @GET("movie/{sortorder}")
-    Call<List<MdbMovieResult>> mdbFetchResults(
+    Call<List<MdbPageResult>> mdbFetchResults(
             @Path("sortorder") String sortorder,
             @Query(value = "api_key", encoded = true) String apikey);
 
