@@ -153,7 +153,8 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Call<List<MdbPageResult>> call, Throwable t) {
-                Log.d(this.getClass().getSimpleName(),t.getMessage());
+                Log.d(this.getClass().getSimpleName(),t.toString());
+                t.printStackTrace();
             }
 
         });
