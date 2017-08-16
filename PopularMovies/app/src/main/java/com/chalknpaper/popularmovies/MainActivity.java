@@ -23,11 +23,10 @@ import com.chalknpaper.popularmovies.utilities.NetworkUtils;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity
         implements MovieAdapter.ListItemClickListener {
@@ -141,26 +140,15 @@ public class MainActivity extends AppCompatActivity
 
         MdbAPIService mdbAPIService = MdbAPIService.retrofit.create(MdbAPIService.class);
 
-        Call<List<MdbPageResult>> call = mdbAPIService.mdbFetchResults(moviePreference,
+        Observable <MdbPageResult> mDbData = mdbAPIService.mdbFetchResults(moviePreference,
                 com.chalknpaper.popularmovies.BuildConfig.OPEN_WEATHER_MAP_API_KEY);
-        String requesterUrl = mdbAPIService.mdbFetchResults(moviePreference,
-                com.chalknpaper.popularmovies.BuildConfig.OPEN_WEATHER_MAP_API_KEY).request().url().toString();
-        Log.d(this.getClass().getSimpleName(),"requested url: " + requesterUrl);
 
-        call.enqueue(new Callback<List<MdbPageResult>>() {
-            @Override
-            public void onResponse(Call<List<MdbPageResult>> call, Response<List<MdbPageResult>> response) {
-
-                Log.d(this.getClass().getSimpleName(),"Retrofit Response received");
-            }
-
-            @Override
-            public void onFailure(Call<List<MdbPageResult>> call, Throwable t) {
-                Log.d(this.getClass().getSimpleName(),t.toString());
-                t.printStackTrace();
-            }
-
-        });
+        mDbData.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(MdbPageResult -> {
+                    Log.e("Movie Title", MdbPageResult.getResults().get(0).getTitle()
+                            );
+                });
 
  //       new FetchMovieTask().execute(moviePreference);
     }
