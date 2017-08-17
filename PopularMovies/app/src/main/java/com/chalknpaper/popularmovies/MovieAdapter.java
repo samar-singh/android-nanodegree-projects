@@ -8,12 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.chalknpaper.popularmovies.data.SingleMovieDetails;
+import com.chalknpaper.popularmovies.data.MdbPageResult;
+import com.chalknpaper.popularmovies.data.Result;
 import com.chalknpaper.popularmovies.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
 import java.net.URL;
-import java.util.ArrayList;
 
 /**
  * Created by samarsingh on 11/06/17.
@@ -33,14 +33,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHo
 
     private static int viewHolderCount;
 
-    private ArrayList<SingleMovieDetails> aMovieData;
+    private MdbPageResult aMovieData;
     private Context context;
 
     /**
      * The interface that receives onClick messages.
      */
     public interface ListItemClickListener {
-        void onListItemClick(SingleMovieDetails clickedItemIndex);
+        void onListItemClick(Result clickedItemIndex);
     }
 
     // COMPLETED (4) Add a ListItemClickListener as a parameter to the constructor and store it in mOnClickListener
@@ -97,8 +97,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHo
     @Override
     public void onBindViewHolder(NumberViewHolder holder, int position) {
         Log.d(TAG, "#" + position);
-            SingleMovieDetails singleMovieDetails = aMovieData.get(position);
-            String mMoviePosterPath = singleMovieDetails.getmPosterPath();
+            Result singleMovieDetails = aMovieData.getResults().get(position);
+            String mMoviePosterPath = singleMovieDetails.getPosterPath();
             URL mPosterUrl = NetworkUtils.buildUrlPoster(mMoviePosterPath);
 
 
@@ -115,7 +115,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHo
      */
     @Override
     public int getItemCount() {
-        return aMovieData.size();
+        return aMovieData.getResults().size();
     }
 
     // COMPLETED (5) Implement OnClickListener in the NumberViewHolder class
@@ -152,11 +152,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHo
         @Override
         public void onClick(View v) {
             int clickedPosition = getAdapterPosition();
-            SingleMovieDetails singleMovieDetails = aMovieData.get(clickedPosition);
+            Result singleMovieDetails = aMovieData.getResults().get(clickedPosition);
             mOnClickListener.onListItemClick(singleMovieDetails);
         }
     }
-    public void setMovieData(ArrayList<SingleMovieDetails> movieData) {
+    public void setMovieData(MdbPageResult movieData) {
         aMovieData = movieData;
         notifyDataSetChanged();
     }

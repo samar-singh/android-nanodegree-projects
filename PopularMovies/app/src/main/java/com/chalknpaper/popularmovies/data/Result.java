@@ -1,6 +1,9 @@
 
 package com.chalknpaper.popularmovies.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -24,7 +27,8 @@ import java.util.List;
     "overview",
     "release_date"
 })
-public class Result {
+public class Result implements Parcelable
+{
 
     @JsonProperty("vote_count")
     private Integer voteCount;
@@ -54,6 +58,37 @@ public class Result {
     private String overview;
     @JsonProperty("release_date")
     private String releaseDate;
+    public final static Parcelable.Creator<Result> CREATOR = new Creator<Result>() {
+
+
+        @SuppressWarnings({
+            "unchecked"
+        })
+        public Result createFromParcel(Parcel in) {
+            Result instance = new Result();
+            instance.voteCount = ((Integer) in.readValue((Integer.class.getClassLoader())));
+            instance.id = ((Integer) in.readValue((Integer.class.getClassLoader())));
+            instance.video = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+            instance.voteAverage = ((Double) in.readValue((Integer.class.getClassLoader())));
+            instance.title = ((String) in.readValue((String.class.getClassLoader())));
+            instance.popularity = ((Double) in.readValue((Double.class.getClassLoader())));
+            instance.posterPath = ((String) in.readValue((String.class.getClassLoader())));
+            instance.originalLanguage = ((String) in.readValue((String.class.getClassLoader())));
+            instance.originalTitle = ((String) in.readValue((String.class.getClassLoader())));
+            in.readList(instance.genreIds, (java.lang.Integer.class.getClassLoader()));
+            instance.backdropPath = ((String) in.readValue((String.class.getClassLoader())));
+            instance.adult = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+            instance.overview = ((String) in.readValue((String.class.getClassLoader())));
+            instance.releaseDate = ((String) in.readValue((String.class.getClassLoader())));
+            return instance;
+        }
+
+        public Result[] newArray(int size) {
+            return (new Result[size]);
+        }
+
+    }
+    ;
 
     @JsonProperty("vote_count")
     public Integer getVoteCount() {
@@ -193,6 +228,27 @@ public class Result {
     @JsonProperty("release_date")
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(voteCount);
+        dest.writeValue(id);
+        dest.writeValue(video);
+        dest.writeValue(voteAverage);
+        dest.writeValue(title);
+        dest.writeValue(popularity);
+        dest.writeValue(posterPath);
+        dest.writeValue(originalLanguage);
+        dest.writeValue(originalTitle);
+        dest.writeList(genreIds);
+        dest.writeValue(backdropPath);
+        dest.writeValue(adult);
+        dest.writeValue(overview);
+        dest.writeValue(releaseDate);
+    }
+
+    public int describeContents() {
+        return  0;
     }
 
 }

@@ -3,6 +3,7 @@ package com.chalknpaper.popularmovies.utilities;
 import com.chalknpaper.popularmovies.data.MdbPageResult;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
+import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
@@ -15,7 +16,13 @@ import retrofit2.http.Query;
 
 public interface MdbAPIService {
     @GET("movie/{sortorder}")
+/*
     io.reactivex.Observable<MdbPageResult> mdbFetchResults(
+            @Path("sortorder") String sortorder,
+            @Query(value = "api_key", encoded = true) String apikey);
+
+*/
+    Call<MdbPageResult> mdbFetchResults(
             @Path("sortorder") String sortorder,
             @Query(value = "api_key", encoded = true) String apikey);
 

@@ -1,6 +1,9 @@
 
 package com.chalknpaper.popularmovies.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -14,7 +17,8 @@ import java.util.List;
     "total_pages",
     "results"
 })
-public class MdbPageResult {
+public class MdbPageResult implements Parcelable
+{
 
     @JsonProperty("page")
     private Integer page;
@@ -24,6 +28,27 @@ public class MdbPageResult {
     private Integer totalPages;
     @JsonProperty("results")
     private List<Result> results = null;
+    public final static Parcelable.Creator<MdbPageResult> CREATOR = new Creator<MdbPageResult>() {
+
+
+        @SuppressWarnings({
+            "unchecked"
+        })
+        public MdbPageResult createFromParcel(Parcel in) {
+            MdbPageResult instance = new MdbPageResult();
+            instance.page = ((Integer) in.readValue((Integer.class.getClassLoader())));
+            instance.totalResults = ((Integer) in.readValue((Integer.class.getClassLoader())));
+            instance.totalPages = ((Integer) in.readValue((Integer.class.getClassLoader())));
+            in.readList(instance.results, (com.chalknpaper.popularmovies.data.Result.class.getClassLoader()));
+            return instance;
+        }
+
+        public MdbPageResult[] newArray(int size) {
+            return (new MdbPageResult[size]);
+        }
+
+    }
+    ;
 
     @JsonProperty("page")
     public Integer getPage() {
@@ -63,6 +88,17 @@ public class MdbPageResult {
     @JsonProperty("results")
     public void setResults(List<Result> results) {
         this.results = results;
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(page);
+        dest.writeValue(totalResults);
+        dest.writeValue(totalPages);
+        dest.writeList(results);
+    }
+
+    public int describeContents() {
+        return  0;
     }
 
 }

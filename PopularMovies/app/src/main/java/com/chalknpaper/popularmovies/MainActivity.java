@@ -2,7 +2,6 @@ package com.chalknpaper.popularmovies;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,17 +15,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chalknpaper.popularmovies.data.MdbPageResult;
+import com.chalknpaper.popularmovies.data.Result;
 import com.chalknpaper.popularmovies.data.SingleMovieDetails;
 import com.chalknpaper.popularmovies.utilities.MdbAPIService;
-import com.chalknpaper.popularmovies.utilities.MovieJsonUtils;
-import com.chalknpaper.popularmovies.utilities.NetworkUtils;
 
-import java.net.URL;
 import java.util.ArrayList;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
         implements MovieAdapter.ListItemClickListener {
@@ -124,9 +121,9 @@ public class MainActivity extends AppCompatActivity
      * @param mSingleMovieDetailObj Single MovieDetails Class Object.
      */
     @Override
-    public void onListItemClick(SingleMovieDetails mSingleMovieDetailObj) {
-        Intent intent = new Intent(this,MovieDetailActivity.class);
-        intent.putExtra("singleMovieDetailsObj", mSingleMovieDetailObj);
+    public void onListItemClick(Result mSingleMovieDetailObj) {
+        Intent intent = new Intent(this,Result.class);
+        //intent.putExtra("singleMovieDetailsObj", mSingleMovieDetailObj);
         startActivity(intent);
     }
 
@@ -137,9 +134,34 @@ public class MainActivity extends AppCompatActivity
      */
     private void loadMovieData(String moviePreference) {
         showMovieDataView();
+        mLoadingIndicator.setVisibility(View.VISIBLE);
 
         MdbAPIService mdbAPIService = MdbAPIService.retrofit.create(MdbAPIService.class);
+        mdbAPIService.mdbFetchResults(moviePreference,
+                com.chalknpaper.popularmovies.BuildConfig.OPEN_WEATHER_MAP_API_KEY).enqueue(new Callback<MdbPageResult>() {
+            @Override
+            public void onResponse(Call<MdbPageResult> call, Response<MdbPageResult> response) {
 
+               //Todo: modify this code to pass the movies to the recyclerview
+                if (response != null) {
+                    mLoadingIndicator.setVisibility(View.INVISIBLE);
+                    showMovieDataView();
+                    mMovieAdapter = new MovieAdapter((MovieAdapter.ListItemClickListener) context);
+                    mRecyclerView.setAdapter(mMovieAdapter);
+
+                    mMovieAdapter.setMovieData(response.body());
+                } else {
+                    showErrorMessage();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MdbPageResult> call, Throwable t) {
+
+                Log.d(this.getClass().getSimpleName(),"Access failed");
+            }
+        });
+/*
         Observable <MdbPageResult> mDbData = mdbAPIService.mdbFetchResults(moviePreference,
                 com.chalknpaper.popularmovies.BuildConfig.OPEN_WEATHER_MAP_API_KEY);
 
@@ -149,6 +171,7 @@ public class MainActivity extends AppCompatActivity
                     Log.e("Movie Title", mdbPageResult.getResults().get(0).getTitle()
                             );
                 });
+*/
 
  //       new FetchMovieTask().execute(moviePreference);
     }
@@ -167,53 +190,5 @@ public class MainActivity extends AppCompatActivity
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
 
-    private class FetchMovieTask extends AsyncTask<String, Void, ArrayList<SingleMovieDetails>> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mLoadingIndicator.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected ArrayList<SingleMovieDetails> doInBackground(String... params) {
-
-            /* If there's no zip code, there's nothing to look up. */
-            if (params.length == 0) {
-                return null;
-            }
-
-            String sortOrder = params[0];
-            URL movieRequestUrl = NetworkUtils.buildUrlMdb(sortOrder);
-
-            try {
-                String jsonMovieResponse = NetworkUtils
-                        .getResponseFromHttpUrl(movieRequestUrl);
-
-               mMovieData = MovieJsonUtils
-                        .getSimpleMovieStringsFromJson(jsonMovieResponse);
-
-                return mMovieData;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<SingleMovieDetails> movieData) {
-            mLoadingIndicator.setVisibility(View.INVISIBLE);
-            if (movieData != null) {
-                showMovieDataView();
-                mMovieAdapter = new MovieAdapter((MovieAdapter.ListItemClickListener) context);
-                mRecyclerView.setAdapter(mMovieAdapter);
-
-                mMovieAdapter.setMovieData(movieData);
-            } else {
-                showErrorMessage();
-            }
-        }
-    }
 }
 
