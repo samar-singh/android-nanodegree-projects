@@ -1,14 +1,13 @@
 
 package com.chalknpaper.popularmovies.data;
 
+import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
-
+import android.os.Parcelable.Creator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -31,17 +30,17 @@ public class Result implements Parcelable
 {
 
     @JsonProperty("vote_count")
-    private Integer voteCount;
+    private int voteCount;
     @JsonProperty("id")
-    private Integer id;
+    private int id;
     @JsonProperty("video")
-    private Boolean video;
+    private boolean video;
     @JsonProperty("vote_average")
-    private Double voteAverage;
+    private int voteAverage;
     @JsonProperty("title")
     private String title;
     @JsonProperty("popularity")
-    private Double popularity;
+    private double popularity;
     @JsonProperty("poster_path")
     private String posterPath;
     @JsonProperty("original_language")
@@ -53,7 +52,7 @@ public class Result implements Parcelable
     @JsonProperty("backdrop_path")
     private String backdropPath;
     @JsonProperty("adult")
-    private Boolean adult;
+    private boolean adult;
     @JsonProperty("overview")
     private String overview;
     @JsonProperty("release_date")
@@ -66,18 +65,18 @@ public class Result implements Parcelable
         })
         public Result createFromParcel(Parcel in) {
             Result instance = new Result();
-            instance.voteCount = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            instance.id = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            instance.video = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
-            instance.voteAverage = ((Double) in.readValue((Integer.class.getClassLoader())));
+            instance.voteCount = ((int) in.readValue((int.class.getClassLoader())));
+            instance.id = ((int) in.readValue((int.class.getClassLoader())));
+            instance.video = ((boolean) in.readValue((boolean.class.getClassLoader())));
+            instance.voteAverage = ((int) in.readValue((int.class.getClassLoader())));
             instance.title = ((String) in.readValue((String.class.getClassLoader())));
-            instance.popularity = ((Double) in.readValue((Double.class.getClassLoader())));
+            instance.popularity = ((double) in.readValue((double.class.getClassLoader())));
             instance.posterPath = ((String) in.readValue((String.class.getClassLoader())));
             instance.originalLanguage = ((String) in.readValue((String.class.getClassLoader())));
             instance.originalTitle = ((String) in.readValue((String.class.getClassLoader())));
             in.readList(instance.genreIds, (java.lang.Integer.class.getClassLoader()));
             instance.backdropPath = ((String) in.readValue((String.class.getClassLoader())));
-            instance.adult = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+            instance.adult = ((boolean) in.readValue((boolean.class.getClassLoader())));
             instance.overview = ((String) in.readValue((String.class.getClassLoader())));
             instance.releaseDate = ((String) in.readValue((String.class.getClassLoader())));
             return instance;
@@ -91,42 +90,42 @@ public class Result implements Parcelable
     ;
 
     @JsonProperty("vote_count")
-    public Integer getVoteCount() {
+    public int getVoteCount() {
         return voteCount;
     }
 
     @JsonProperty("vote_count")
-    public void setVoteCount(Integer voteCount) {
+    public void setVoteCount(int voteCount) {
         this.voteCount = voteCount;
     }
 
     @JsonProperty("id")
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
     @JsonProperty("id")
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
     @JsonProperty("video")
-    public Boolean getVideo() {
+    public boolean isVideo() {
         return video;
     }
 
     @JsonProperty("video")
-    public void setVideo(Boolean video) {
+    public void setVideo(boolean video) {
         this.video = video;
     }
 
     @JsonProperty("vote_average")
-    public Double getVoteAverage() {
+    public int getVoteAverage() {
         return voteAverage;
     }
 
     @JsonProperty("vote_average")
-    public void setVoteAverage(Double voteAverage) {
+    public void setVoteAverage(int voteAverage) {
         this.voteAverage = voteAverage;
     }
 
@@ -141,12 +140,12 @@ public class Result implements Parcelable
     }
 
     @JsonProperty("popularity")
-    public Double getPopularity() {
+    public double getPopularity() {
         return popularity;
     }
 
     @JsonProperty("popularity")
-    public void setPopularity(Double popularity) {
+    public void setPopularity(double popularity) {
         this.popularity = popularity;
     }
 
@@ -201,12 +200,12 @@ public class Result implements Parcelable
     }
 
     @JsonProperty("adult")
-    public Boolean getAdult() {
+    public boolean isAdult() {
         return adult;
     }
 
     @JsonProperty("adult")
-    public void setAdult(Boolean adult) {
+    public void setAdult(boolean adult) {
         this.adult = adult;
     }
 

@@ -21,11 +21,11 @@ public class MdbPageResult implements Parcelable
 {
 
     @JsonProperty("page")
-    private Integer page;
+    private int page;
     @JsonProperty("total_results")
-    private Integer totalResults;
+    private int totalResults;
     @JsonProperty("total_pages")
-    private Integer totalPages;
+    private int totalPages;
     @JsonProperty("results")
     private List<Result> results = null;
     public final static Parcelable.Creator<MdbPageResult> CREATOR = new Creator<MdbPageResult>() {
@@ -36,9 +36,9 @@ public class MdbPageResult implements Parcelable
         })
         public MdbPageResult createFromParcel(Parcel in) {
             MdbPageResult instance = new MdbPageResult();
-            instance.page = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            instance.totalResults = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            instance.totalPages = ((Integer) in.readValue((Integer.class.getClassLoader())));
+            instance.page = ((int) in.readValue((int.class.getClassLoader())));
+            instance.totalResults = ((int) in.readValue((int.class.getClassLoader())));
+            instance.totalPages = ((int) in.readValue((int.class.getClassLoader())));
             in.readList(instance.results, (com.chalknpaper.popularmovies.data.Result.class.getClassLoader()));
             return instance;
         }
@@ -51,32 +51,32 @@ public class MdbPageResult implements Parcelable
     ;
 
     @JsonProperty("page")
-    public Integer getPage() {
+    public int getPage() {
         return page;
     }
 
     @JsonProperty("page")
-    public void setPage(Integer page) {
+    public void setPage(int page) {
         this.page = page;
     }
 
     @JsonProperty("total_results")
-    public Integer getTotalResults() {
+    public int getTotalResults() {
         return totalResults;
     }
 
     @JsonProperty("total_results")
-    public void setTotalResults(Integer totalResults) {
+    public void setTotalResults(int totalResults) {
         this.totalResults = totalResults;
     }
 
     @JsonProperty("total_pages")
-    public Integer getTotalPages() {
+    public int getTotalPages() {
         return totalPages;
     }
 
     @JsonProperty("total_pages")
-    public void setTotalPages(Integer totalPages) {
+    public void setTotalPages(int totalPages) {
         this.totalPages = totalPages;
     }
 
