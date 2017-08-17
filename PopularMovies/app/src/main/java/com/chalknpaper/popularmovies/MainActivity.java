@@ -145,8 +145,8 @@ public class MainActivity extends AppCompatActivity
 
         mDbData.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(MdbPageResult -> {
-                    Log.e("Movie Title", MdbPageResult.getResults().get(0).getTitle()
+                .subscribe(mdbPageResult -> {
+                    Log.e("Movie Title", mdbPageResult.getResults().get(0).getTitle()
                             );
                 });
 
