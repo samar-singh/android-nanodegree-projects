@@ -1,7 +1,6 @@
 package com.chalknpaper.popularmovies.utilities;
 
 import com.chalknpaper.popularmovies.data.MdbPageResult;
-import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -26,10 +25,26 @@ public interface MdbAPIService {
             @Path("sortorder") String sortorder,
             @Query(value = "api_key", encoded = true) String apikey);
 
+/*
+    OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
+            .build();
+*/
+
     public static final Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("http://api.themoviedb.org/3/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+
+/*
+    public static final Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl("http://api.themoviedb.org/3/")
+            .client(okHttpClient)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build();
+*/
 
 }

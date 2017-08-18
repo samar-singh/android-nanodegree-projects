@@ -1,62 +1,59 @@
 
 package com.chalknpaper.popularmovies.data;
 
-import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "vote_count",
-    "id",
-    "video",
-    "vote_average",
-    "title",
-    "popularity",
-    "poster_path",
-    "original_language",
-    "original_title",
-    "genre_ids",
-    "backdrop_path",
-    "adult",
-    "overview",
-    "release_date"
-})
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 public class Result implements Parcelable
 {
 
-    @JsonProperty("vote_count")
-    private int voteCount;
-    @JsonProperty("id")
+    @SerializedName("vote_count")
+    @Expose
+    private int vote_count;
+    @SerializedName("id")
+    @Expose
     private int id;
-    @JsonProperty("video")
+    @SerializedName("video")
+    @Expose
     private boolean video;
-    @JsonProperty("vote_average")
-    private int voteAverage;
-    @JsonProperty("title")
+    @SerializedName("vote_average")
+    @Expose
+    private int vote_average;
+    @SerializedName("title")
+    @Expose
     private String title;
-    @JsonProperty("popularity")
+    @SerializedName("popularity")
+    @Expose
     private double popularity;
-    @JsonProperty("poster_path")
-    private String posterPath;
-    @JsonProperty("original_language")
-    private String originalLanguage;
-    @JsonProperty("original_title")
-    private String originalTitle;
-    @JsonProperty("genre_ids")
-    private List<Integer> genreIds = null;
-    @JsonProperty("backdrop_path")
-    private String backdropPath;
-    @JsonProperty("adult")
+    @SerializedName("poster_path")
+    @Expose
+    private String poster_path;
+    @SerializedName("original_language")
+    @Expose
+    private String original_language;
+    @SerializedName("original_title")
+    @Expose
+    private String original_title;
+    @SerializedName("genre_ids")
+    @Expose
+    private List<Integer> genre_ids = null;
+    @SerializedName("backdrop_path")
+    @Expose
+    private String backdrop_path;
+    @SerializedName("adult")
+    @Expose
     private boolean adult;
-    @JsonProperty("overview")
+    @SerializedName("overview")
+    @Expose
     private String overview;
-    @JsonProperty("release_date")
-    private String releaseDate;
+    @SerializedName("release_date")
+    @Expose
+    private String release_date;
     public final static Parcelable.Creator<Result> CREATOR = new Creator<Result>() {
 
 
@@ -65,20 +62,20 @@ public class Result implements Parcelable
         })
         public Result createFromParcel(Parcel in) {
             Result instance = new Result();
-            instance.voteCount = ((int) in.readValue((int.class.getClassLoader())));
+            instance.vote_count = ((int) in.readValue((int.class.getClassLoader())));
             instance.id = ((int) in.readValue((int.class.getClassLoader())));
             instance.video = ((boolean) in.readValue((boolean.class.getClassLoader())));
-            instance.voteAverage = ((int) in.readValue((int.class.getClassLoader())));
+            instance.vote_average = ((int) in.readValue((int.class.getClassLoader())));
             instance.title = ((String) in.readValue((String.class.getClassLoader())));
             instance.popularity = ((double) in.readValue((double.class.getClassLoader())));
-            instance.posterPath = ((String) in.readValue((String.class.getClassLoader())));
-            instance.originalLanguage = ((String) in.readValue((String.class.getClassLoader())));
-            instance.originalTitle = ((String) in.readValue((String.class.getClassLoader())));
-            in.readList(instance.genreIds, (java.lang.Integer.class.getClassLoader()));
-            instance.backdropPath = ((String) in.readValue((String.class.getClassLoader())));
+            instance.poster_path = ((String) in.readValue((String.class.getClassLoader())));
+            instance.original_language = ((String) in.readValue((String.class.getClassLoader())));
+            instance.original_title = ((String) in.readValue((String.class.getClassLoader())));
+            in.readList(instance.genre_ids, (java.lang.Integer.class.getClassLoader()));
+            instance.backdrop_path = ((String) in.readValue((String.class.getClassLoader())));
             instance.adult = ((boolean) in.readValue((boolean.class.getClassLoader())));
             instance.overview = ((String) in.readValue((String.class.getClassLoader())));
-            instance.releaseDate = ((String) in.readValue((String.class.getClassLoader())));
+            instance.release_date = ((String) in.readValue((String.class.getClassLoader())));
             return instance;
         }
 
@@ -89,161 +86,133 @@ public class Result implements Parcelable
     }
     ;
 
-    @JsonProperty("vote_count")
-    public int getVoteCount() {
-        return voteCount;
+    public int getVote_count() {
+        return vote_count;
     }
 
-    @JsonProperty("vote_count")
-    public void setVoteCount(int voteCount) {
-        this.voteCount = voteCount;
+    public void setVote_count(int vote_count) {
+        this.vote_count = vote_count;
     }
 
-    @JsonProperty("id")
     public int getId() {
         return id;
     }
 
-    @JsonProperty("id")
     public void setId(int id) {
         this.id = id;
     }
 
-    @JsonProperty("video")
     public boolean isVideo() {
         return video;
     }
 
-    @JsonProperty("video")
     public void setVideo(boolean video) {
         this.video = video;
     }
 
-    @JsonProperty("vote_average")
-    public int getVoteAverage() {
-        return voteAverage;
+    public int getVote_average() {
+        return vote_average;
     }
 
-    @JsonProperty("vote_average")
-    public void setVoteAverage(int voteAverage) {
-        this.voteAverage = voteAverage;
+    public void setVote_average(int vote_average) {
+        this.vote_average = vote_average;
     }
 
-    @JsonProperty("title")
     public String getTitle() {
         return title;
     }
 
-    @JsonProperty("title")
     public void setTitle(String title) {
         this.title = title;
     }
 
-    @JsonProperty("popularity")
     public double getPopularity() {
         return popularity;
     }
 
-    @JsonProperty("popularity")
     public void setPopularity(double popularity) {
         this.popularity = popularity;
     }
 
-    @JsonProperty("poster_path")
-    public String getPosterPath() {
-        return posterPath;
+    public String getPoster_path() {
+        return poster_path;
     }
 
-    @JsonProperty("poster_path")
-    public void setPosterPath(String posterPath) {
-        this.posterPath = posterPath;
+    public void setPoster_path(String poster_path) {
+        this.poster_path = poster_path;
     }
 
-    @JsonProperty("original_language")
-    public String getOriginalLanguage() {
-        return originalLanguage;
+    public String getOriginal_language() {
+        return original_language;
     }
 
-    @JsonProperty("original_language")
-    public void setOriginalLanguage(String originalLanguage) {
-        this.originalLanguage = originalLanguage;
+    public void setOriginal_language(String original_language) {
+        this.original_language = original_language;
     }
 
-    @JsonProperty("original_title")
-    public String getOriginalTitle() {
-        return originalTitle;
+    public String getOriginal_title() {
+        return original_title;
     }
 
-    @JsonProperty("original_title")
-    public void setOriginalTitle(String originalTitle) {
-        this.originalTitle = originalTitle;
+    public void setOriginal_title(String original_title) {
+        this.original_title = original_title;
     }
 
-    @JsonProperty("genre_ids")
-    public List<Integer> getGenreIds() {
-        return genreIds;
+    public List<Integer> getGenre_ids() {
+        return genre_ids;
     }
 
-    @JsonProperty("genre_ids")
-    public void setGenreIds(List<Integer> genreIds) {
-        this.genreIds = genreIds;
+    public void setGenre_ids(List<Integer> genre_ids) {
+        this.genre_ids = genre_ids;
     }
 
-    @JsonProperty("backdrop_path")
-    public String getBackdropPath() {
-        return backdropPath;
+    public String getBackdrop_path() {
+        return backdrop_path;
     }
 
-    @JsonProperty("backdrop_path")
-    public void setBackdropPath(String backdropPath) {
-        this.backdropPath = backdropPath;
+    public void setBackdrop_path(String backdrop_path) {
+        this.backdrop_path = backdrop_path;
     }
 
-    @JsonProperty("adult")
     public boolean isAdult() {
         return adult;
     }
 
-    @JsonProperty("adult")
     public void setAdult(boolean adult) {
         this.adult = adult;
     }
 
-    @JsonProperty("overview")
     public String getOverview() {
         return overview;
     }
 
-    @JsonProperty("overview")
     public void setOverview(String overview) {
         this.overview = overview;
     }
 
-    @JsonProperty("release_date")
-    public String getReleaseDate() {
-        return releaseDate;
+    public String getRelease_date() {
+        return release_date;
     }
 
-    @JsonProperty("release_date")
-    public void setReleaseDate(String releaseDate) {
-        this.releaseDate = releaseDate;
+    public void setRelease_date(String release_date) {
+        this.release_date = release_date;
     }
 
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(voteCount);
+        dest.writeValue(vote_count);
         dest.writeValue(id);
         dest.writeValue(video);
-        dest.writeValue(voteAverage);
+        dest.writeValue(vote_average);
         dest.writeValue(title);
         dest.writeValue(popularity);
-        dest.writeValue(posterPath);
-        dest.writeValue(originalLanguage);
-        dest.writeValue(originalTitle);
-        dest.writeList(genreIds);
-        dest.writeValue(backdropPath);
+        dest.writeValue(poster_path);
+        dest.writeValue(original_language);
+        dest.writeValue(original_title);
+        dest.writeList(genre_ids);
+        dest.writeValue(backdrop_path);
         dest.writeValue(adult);
         dest.writeValue(overview);
-        dest.writeValue(releaseDate);
+        dest.writeValue(release_date);
     }
 
     public int describeContents() {

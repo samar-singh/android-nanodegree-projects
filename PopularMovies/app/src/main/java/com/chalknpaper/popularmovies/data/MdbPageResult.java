@@ -4,29 +4,25 @@ package com.chalknpaper.popularmovies.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "page",
-    "total_results",
-    "total_pages",
-    "results"
-})
 public class MdbPageResult implements Parcelable
 {
 
-    @JsonProperty("page")
+    @SerializedName("page")
+    @Expose
     private int page;
-    @JsonProperty("total_results")
-    private int totalResults;
-    @JsonProperty("total_pages")
-    private int totalPages;
-    @JsonProperty("results")
+    @SerializedName("total_results")
+    @Expose
+    private int total_results;
+    @SerializedName("total_pages")
+    @Expose
+    private int total_pages;
+    @SerializedName("results")
+    @Expose
     private List<Result> results = null;
     public final static Parcelable.Creator<MdbPageResult> CREATOR = new Creator<MdbPageResult>() {
 
@@ -37,8 +33,8 @@ public class MdbPageResult implements Parcelable
         public MdbPageResult createFromParcel(Parcel in) {
             MdbPageResult instance = new MdbPageResult();
             instance.page = ((int) in.readValue((int.class.getClassLoader())));
-            instance.totalResults = ((int) in.readValue((int.class.getClassLoader())));
-            instance.totalPages = ((int) in.readValue((int.class.getClassLoader())));
+            instance.total_results = ((int) in.readValue((int.class.getClassLoader())));
+            instance.total_pages = ((int) in.readValue((int.class.getClassLoader())));
             in.readList(instance.results, (com.chalknpaper.popularmovies.data.Result.class.getClassLoader()));
             return instance;
         }
@@ -50,50 +46,42 @@ public class MdbPageResult implements Parcelable
     }
     ;
 
-    @JsonProperty("page")
     public int getPage() {
         return page;
     }
 
-    @JsonProperty("page")
     public void setPage(int page) {
         this.page = page;
     }
 
-    @JsonProperty("total_results")
-    public int getTotalResults() {
-        return totalResults;
+    public int getTotal_results() {
+        return total_results;
     }
 
-    @JsonProperty("total_results")
-    public void setTotalResults(int totalResults) {
-        this.totalResults = totalResults;
+    public void setTotal_results(int total_results) {
+        this.total_results = total_results;
     }
 
-    @JsonProperty("total_pages")
-    public int getTotalPages() {
-        return totalPages;
+    public int getTotal_pages() {
+        return total_pages;
     }
 
-    @JsonProperty("total_pages")
-    public void setTotalPages(int totalPages) {
-        this.totalPages = totalPages;
+    public void setTotal_pages(int total_pages) {
+        this.total_pages = total_pages;
     }
 
-    @JsonProperty("results")
     public List<Result> getResults() {
         return results;
     }
 
-    @JsonProperty("results")
     public void setResults(List<Result> results) {
         this.results = results;
     }
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(page);
-        dest.writeValue(totalResults);
-        dest.writeValue(totalPages);
+        dest.writeValue(total_results);
+        dest.writeValue(total_pages);
         dest.writeList(results);
     }
 
