@@ -1,7 +1,11 @@
 package com.chalknpaper.popularmovies.utilities;
 
 import com.chalknpaper.popularmovies.data.MdbPageResult;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -25,16 +29,18 @@ public interface MdbAPIService {
             @Path("sortorder") String sortorder,
             @Query(value = "api_key", encoded = true) String apikey);
 
-/*
+
     OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+            .addNetworkInterceptor(new StethoInterceptor())
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
             .build();
-*/
+
 
     public static final Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("http://api.themoviedb.org/3/")
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 

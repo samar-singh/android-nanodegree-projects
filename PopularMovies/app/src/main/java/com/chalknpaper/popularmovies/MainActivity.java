@@ -144,6 +144,7 @@ public class MainActivity extends AppCompatActivity
 
                //Todo: modify this code to pass the movies to the recyclerview
                 if (response != null) {
+                    Log.d(MainActivity.this.getClass().getSimpleName(),"response.raw().request().url();"+response.raw().request().url());
                     mLoadingIndicator.setVisibility(View.INVISIBLE);
                     showMovieDataView();
                     mMovieAdapter = new MovieAdapter((MovieAdapter.ListItemClickListener) context);

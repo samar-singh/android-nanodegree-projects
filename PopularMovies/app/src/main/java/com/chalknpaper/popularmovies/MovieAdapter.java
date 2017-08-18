@@ -98,7 +98,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHo
     public void onBindViewHolder(NumberViewHolder holder, int position) {
         Log.d(TAG, "#" + position);
             Result singleMovieDetails = aMovieData.getResults().get(position);
-            String mMoviePosterPath = singleMovieDetails.getPoster_path();
+            String mMoviePosterPath = singleMovieDetails.getposter_path();
             URL mPosterUrl = NetworkUtils.buildUrlPoster(mMoviePosterPath);
 
 
