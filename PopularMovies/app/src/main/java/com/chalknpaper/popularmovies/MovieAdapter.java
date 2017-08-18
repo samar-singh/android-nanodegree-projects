@@ -33,7 +33,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHo
 
     private static int viewHolderCount;
 
-    private MdbPageResult aMovieData;
+    private MdbPageResult mMovieData;
     private Context context;
 
     /**
@@ -97,7 +97,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHo
     @Override
     public void onBindViewHolder(NumberViewHolder holder, int position) {
         Log.d(TAG, "#" + position);
-            Result singleMovieDetails = aMovieData.getResults().get(position);
+            Result singleMovieDetails = mMovieData.getResults().get(position);
             String mMoviePosterPath = singleMovieDetails.getposter_path();
             URL mPosterUrl = NetworkUtils.buildUrlPoster(mMoviePosterPath);
 
@@ -115,7 +115,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHo
      */
     @Override
     public int getItemCount() {
-        return aMovieData.getResults().size();
+        return mMovieData.getResults().size();
     }
 
     // COMPLETED (5) Implement OnClickListener in the NumberViewHolder class
@@ -152,12 +152,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHo
         @Override
         public void onClick(View v) {
             int clickedPosition = getAdapterPosition();
-            Result singleMovieDetails = aMovieData.getResults().get(clickedPosition);
+            Result singleMovieDetails = mMovieData.getResults().get(clickedPosition);
             mOnClickListener.onListItemClick(singleMovieDetails);
         }
     }
     public void setMovieData(MdbPageResult movieData) {
-        aMovieData = movieData;
+        mMovieData = movieData;
         notifyDataSetChanged();
     }
 
