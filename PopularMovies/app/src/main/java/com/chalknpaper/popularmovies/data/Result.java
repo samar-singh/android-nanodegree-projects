@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -49,7 +50,7 @@ public class Result implements Parcelable
     @JsonProperty("original_title")
     private String original_title;
     @JsonProperty("genre_ids")
-    private List<Integer> genre_ids = null;
+    private List<Integer> genre_ids = new ArrayList<>();
     @JsonProperty("backdrop_path")
     private String backdrop_path;
     @JsonProperty("adult")

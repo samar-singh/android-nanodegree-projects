@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case  R.id.action_sort_rating:
-                moviePreference = "rating";
+                moviePreference = "top_rated";
                 break;
             default:
                 Toast.makeText(this,"invalid choice",Toast.LENGTH_LONG).show();
@@ -122,8 +122,8 @@ public class MainActivity extends AppCompatActivity
      */
     @Override
     public void onListItemClick(Result mSingleMovieDetailObj) {
-        Intent intent = new Intent(this,Result.class);
-        //intent.putExtra("singleMovieDetailsObj", mSingleMovieDetailObj);
+        Intent intent = new Intent(this,MovieDetailActivity.class);
+        intent.putExtra("singleMovieDetailsObj", mSingleMovieDetailObj);
         startActivity(intent);
     }
 

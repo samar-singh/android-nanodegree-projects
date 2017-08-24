@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+    <ImageView
+        android:id="@+id/video_preview_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:src="@android:drawable/gallery_thumb" />
+
+    <ImageView
+        android:id="@+id/play_icon"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_play" />
+</FrameLayout>
