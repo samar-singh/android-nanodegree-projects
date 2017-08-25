@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -33,7 +33,7 @@
         android:id="@+id/guideline5"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.2"
-        tools:layout_editor_absoluteY="180dp"
+        tools:layout_editor_absoluteY="244dp"
         tools:layout_editor_absoluteX="0dp" />
 
     <ImageView
@@ -59,7 +59,7 @@
         android:id="@+id/guideline7"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.5"
-        tools:layout_editor_absoluteY="328dp"
+        tools:layout_editor_absoluteY="488dp"
         tools:layout_editor_absoluteX="0dp" />
 
     <TextView
@@ -147,9 +147,10 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_trailers"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:focusableInTouchMode="true"
+        android:focusable="true"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/movieDescriptionTextView"
@@ -157,4 +158,4 @@
 
 </android.support.constraint.ConstraintLayout>
 
-</ScrollView>
+</android.support.v4.widget.NestedScrollView>
