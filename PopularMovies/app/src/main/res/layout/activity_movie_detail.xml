@@ -132,7 +132,7 @@
     <TextView
         android:id="@+id/movieDescriptionTextView"
         android:layout_width="0dp"
-        android:layout_height="160dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         tools:text="@string/default_description"
@@ -153,8 +153,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/movieDescriptionTextView"
-        app:spanCount="1"
-        android:layout_marginTop="8dp" />
+        app:spanCount="1"/>
 
 </android.support.constraint.ConstraintLayout>
 
