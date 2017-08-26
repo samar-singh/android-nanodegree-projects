@@ -1,7 +1,6 @@
 package com.chalknpaper.popularmovies;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,6 +15,7 @@ import com.chalknpaper.popularmovies.data.MdbVideoTrailerResult;
 import com.chalknpaper.popularmovies.data.Result;
 import com.chalknpaper.popularmovies.utilities.MdbAPIService;
 import com.chalknpaper.popularmovies.utilities.NetworkUtils;
+import com.chalknpaper.popularmovies.utilities.RoundedTransformation;
 import com.squareup.picasso.Picasso;
 
 import java.net.URL;
@@ -45,20 +45,6 @@ public class MovieDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
 
-        trailerImageList = new ArrayList<Color>();
-
-        trailerImageList.add(getResources().getDrawable(android.R.drawable.ic_menu_camera));
-        trailerImageList.add(getResources().getDrawable(android.R.drawable.ic_menu_camera));
-        trailerImageList.add(getResources().getDrawable(android.R.drawable.ic_menu_camera));
-        trailerImageList.add(getResources().getDrawable(android.R.drawable.ic_menu_camera));
-        trailerImageList.add(getResources().getDrawable(android.R.drawable.ic_menu_camera));
-        trailerImageList.add(getResources().getDrawable(android.R.drawable.ic_menu_camera));
-        trailerImageList.add(getResources().getDrawable(android.R.drawable.ic_menu_camera));
-        trailerImageList.add(getResources().getDrawable(android.R.drawable.ic_menu_camera));
-        trailerImageList.add(getResources().getDrawable(android.R.drawable.ic_menu_camera));
-        trailerImageList.add(getResources().getDrawable(android.R.drawable.ic_menu_camera));
-
-
         Intent intent = getIntent();
 
         if(intent.hasExtra("singleMovieDetailsObj")){
@@ -80,7 +66,9 @@ public class MovieDetailActivity extends AppCompatActivity {
 
 
             // Use Picasso here to load images onto Grid
-            Picasso.with(this).load(mPosterUrl.toString()).into(moviePosterImageView);
+            Picasso.with(this).load(mPosterUrl.toString())
+                    .transform(new RoundedTransformation(8,0))
+                    .into(moviePosterImageView);
 
 
             String mMovieReleaseDate = singleMovieDetails.getrelease_date();

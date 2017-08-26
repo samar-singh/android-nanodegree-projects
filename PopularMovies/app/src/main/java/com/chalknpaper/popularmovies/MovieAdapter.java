@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import com.chalknpaper.popularmovies.data.MdbPageResult;
 import com.chalknpaper.popularmovies.data.Result;
 import com.chalknpaper.popularmovies.utilities.NetworkUtils;
+import com.chalknpaper.popularmovies.utilities.RoundedTransformation;
 import com.squareup.picasso.Picasso;
 
 import java.net.URL;
@@ -100,10 +101,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHo
             Result singleMovieDetails = mMovieData.getResults().get(position);
             String mMoviePosterPath = singleMovieDetails.getposter_path();
             URL mPosterUrl = NetworkUtils.buildUrlPoster(mMoviePosterPath);
+        float[] outerRadii = new float[]{4,4,4,4,4,4,4,4};
 
 
             // Use Picasso here to load images onto Grid
-        Picasso.with(holder.viewHolderIndex.getContext()).load(mPosterUrl.toString()).into(holder.viewHolderIndex);
+        Picasso.with(holder.viewHolderIndex.getContext()).
+                load(mPosterUrl.toString()).
+                transform(new RoundedTransformation(2,2)).
+                into(holder.viewHolderIndex);
 
     }
 
