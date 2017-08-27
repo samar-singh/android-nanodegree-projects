@@ -101,7 +101,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHo
             Result singleMovieDetails = mMovieData.getResults().get(position);
             String mMoviePosterPath = singleMovieDetails.getposter_path();
             URL mPosterUrl = NetworkUtils.buildUrlPoster(mMoviePosterPath);
-        float[] outerRadii = new float[]{4,4,4,4,4,4,4,4};
 
 
             // Use Picasso here to load images onto Grid

@@ -35,7 +35,7 @@ android {
         }
     }
     buildTypes.each {
-        it.buildConfigField 'String', 'OPEN_WEATHER_MAP_API_KEY', getMyApiKey("moviedbApiKey")
+        it.buildConfigField 'String', 'MOVIEDB_API_KEY', getMyApiKey("moviedbApiKey")
     }
 
 //    compileOptions {

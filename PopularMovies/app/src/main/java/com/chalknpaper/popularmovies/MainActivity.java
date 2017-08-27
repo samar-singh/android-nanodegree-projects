@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity
 
         MdbAPIService mdbAPIService = MdbAPIService.retrofit.create(MdbAPIService.class);
         mdbAPIService.mdbFetchResults(moviePreference,
-                com.chalknpaper.popularmovies.BuildConfig.OPEN_WEATHER_MAP_API_KEY).enqueue(new Callback<MdbPageResult>() {
+                BuildConfig.MOVIEDB_API_KEY).enqueue(new Callback<MdbPageResult>() {
             @Override
             public void onResponse(Call<MdbPageResult> call, Response<MdbPageResult> response) {
 

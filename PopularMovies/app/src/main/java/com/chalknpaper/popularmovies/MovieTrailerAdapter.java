@@ -55,12 +55,12 @@ public class MovieTrailerAdapter extends RecyclerView.Adapter<MovieTrailerAdapte
 //        holder.videoPreviewImage.setImageDrawable((Drawable) trailerImageList.get(position));
         //       holder.videoPreviewImage.setBackgroundColor(0xe6e600);
         MdbSingleTrailerResult singleMovieTrailerResult = mMdbVideoTrailerResult.getResults().get(position);
-        String trailerId = singleMovieTrailerResult.getKey();
-        URL mPosterUrl = NetworkUtils.buildUrlTrailer(trailerId);
+        String trailerKey = singleMovieTrailerResult.getKey();
+        URL mPosterUrl = NetworkUtils.buildUrlTrailer(trailerKey);
         // Use Picasso here to load images onto Grid
         Picasso.with(mContext).load(mPosterUrl.toString()).into(holder.mListItemTrailerBinding.videoPreviewImage);
 
-        // TODO: 24/08/17 : Implement onClickListener here!
+        // Completed: 27/08/17 : Implement onClickListener here!
         holder.mListItemTrailerBinding.videoPreviewImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

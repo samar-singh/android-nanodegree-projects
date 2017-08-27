@@ -89,7 +89,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
             MdbAPIService mdbAPIService = MdbAPIService.retrofit.create(MdbAPIService.class);
             mdbAPIService.mdbFetchTrailerResults(String.valueOf(singleMovieDetails.getId()),
-                    com.chalknpaper.popularmovies.BuildConfig.OPEN_WEATHER_MAP_API_KEY,"en-US").enqueue(new Callback<MdbVideoTrailerResult>() {
+                    BuildConfig.MOVIEDB_API_KEY,"en-US").enqueue(new Callback<MdbVideoTrailerResult>() {
                 @Override
                 public void onResponse(Call<MdbVideoTrailerResult> call, Response<MdbVideoTrailerResult> response) {
 
