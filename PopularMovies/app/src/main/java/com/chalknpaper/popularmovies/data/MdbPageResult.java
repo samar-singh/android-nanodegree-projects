@@ -26,8 +26,8 @@ public class MdbPageResult implements Parcelable
     private int totalResults;
     @JsonProperty("total_pages")
     private int totalPages;
-    @JsonProperty("results")
-    private List<Result> results = null;
+    @JsonProperty("mdbSingleMovieResults")
+    private List<MdbSingleMovieResult> results = null;
     public final static Parcelable.Creator<MdbPageResult> CREATOR = new Creator<MdbPageResult>() {
 
 
@@ -39,7 +39,7 @@ public class MdbPageResult implements Parcelable
             instance.page = ((int) in.readValue((int.class.getClassLoader())));
             instance.totalResults = ((int) in.readValue((int.class.getClassLoader())));
             instance.totalPages = ((int) in.readValue((int.class.getClassLoader())));
-            in.readList(instance.results, (com.chalknpaper.popularmovies.data.Result.class.getClassLoader()));
+            in.readList(instance.results, (MdbSingleMovieResult.class.getClassLoader()));
             return instance;
         }
 
@@ -80,14 +80,14 @@ public class MdbPageResult implements Parcelable
         this.totalPages = totalPages;
     }
 
-    @JsonProperty("results")
-    public List<Result> getResults() {
+    @JsonProperty("mdbSingleMovieResults")
+    public List<MdbSingleMovieResult> getMdbSingleMovieResults() {
         return results;
     }
 
-    @JsonProperty("results")
-    public void setResults(List<Result> results) {
-        this.results = results;
+    @JsonProperty("mdbSingleMovieResults")
+    public void setMdbSingleMovieResults(List<MdbSingleMovieResult> mdbSingleMovieResults) {
+        this.results = mdbSingleMovieResults;
     }
 
     public void writeToParcel(Parcel dest, int flags) {

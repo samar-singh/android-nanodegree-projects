@@ -30,7 +30,7 @@ public class MdbVideoTrailerResult implements Parcelable {
         public MdbVideoTrailerResult createFromParcel(Parcel in) {
             MdbVideoTrailerResult instance = new MdbVideoTrailerResult();
             instance.id = ((int) in.readValue((int.class.getClassLoader())));
-            in.readList(instance.results, (com.chalknpaper.popularmovies.data.Result.class.getClassLoader()));
+            in.readList(instance.results, (MdbSingleMovieResult.class.getClassLoader()));
             return instance;
         }
 

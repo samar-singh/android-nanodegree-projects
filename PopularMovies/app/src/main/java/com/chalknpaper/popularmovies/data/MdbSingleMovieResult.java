@@ -28,7 +28,7 @@ import java.util.List;
     "overview",
     "release_date"
 })
-public class Result implements Parcelable
+public class MdbSingleMovieResult implements Parcelable
 {
 
     @JsonProperty("vote_count")
@@ -59,14 +59,14 @@ public class Result implements Parcelable
     private String overview;
     @JsonProperty("release_date")
     private String release_date;
-    public final static Parcelable.Creator<Result> CREATOR = new Creator<Result>() {
+    public final static Parcelable.Creator<MdbSingleMovieResult> CREATOR = new Creator<MdbSingleMovieResult>() {
 
 
         @SuppressWarnings({
             "unchecked"
         })
-        public Result createFromParcel(Parcel in) {
-            Result instance = new Result();
+        public MdbSingleMovieResult createFromParcel(Parcel in) {
+            MdbSingleMovieResult instance = new MdbSingleMovieResult();
             instance.vote_count = ((int) in.readValue((int.class.getClassLoader())));
             instance.id = ((int) in.readValue((int.class.getClassLoader())));
             instance.video = ((boolean) in.readValue((boolean.class.getClassLoader())));
@@ -84,8 +84,8 @@ public class Result implements Parcelable
             return instance;
         }
 
-        public Result[] newArray(int size) {
-            return (new Result[size]);
+        public MdbSingleMovieResult[] newArray(int size) {
+            return (new MdbSingleMovieResult[size]);
         }
 
     }

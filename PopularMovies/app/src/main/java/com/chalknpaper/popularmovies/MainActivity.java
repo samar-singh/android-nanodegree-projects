@@ -15,11 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chalknpaper.popularmovies.data.MdbPageResult;
-import com.chalknpaper.popularmovies.data.Result;
-import com.chalknpaper.popularmovies.data.SingleMovieDetails;
+import com.chalknpaper.popularmovies.data.MdbSingleMovieResult;
 import com.chalknpaper.popularmovies.utilities.MdbAPIService;
-
-import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,9 +24,6 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
         implements MovieAdapter.ListItemClickListener {
-
-    // --Commented out by Inspection (19/06/17, 7:39 PM):private static final String TAG = MainActivity.class.getSimpleName();
-    private ArrayList<SingleMovieDetails> mMovieData;
 
     private final Context context = this;
     /*
@@ -121,7 +115,7 @@ public class MainActivity extends AppCompatActivity
      * @param mSingleMovieDetailObj Single MovieDetails Class Object.
      */
     @Override
-    public void onListItemClick(Result mSingleMovieDetailObj) {
+    public void onListItemClick(MdbSingleMovieResult mSingleMovieDetailObj) {
         Intent intent = new Intent(this,MovieDetailActivity.class);
         intent.putExtra("singleMovieDetailsObj", mSingleMovieDetailObj);
         startActivity(intent);
@@ -169,7 +163,7 @@ public class MainActivity extends AppCompatActivity
         mDbData.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mdbPageResult -> {
-                    Log.e("Movie Title", mdbPageResult.getResults().get(0).getTitle()
+                    Log.e("Movie Title", mdbPageResult.getMdbSingleMovieResults().get(0).getTitle()
                             );
                 });
 */

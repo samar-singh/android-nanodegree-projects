@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chalknpaper.popularmovies.data.MdbVideoTrailerResult;
-import com.chalknpaper.popularmovies.data.Result;
+import com.chalknpaper.popularmovies.data.MdbSingleMovieResult;
 import com.chalknpaper.popularmovies.utilities.MdbAPIService;
 import com.chalknpaper.popularmovies.utilities.NetworkUtils;
 import com.chalknpaper.popularmovies.utilities.RoundedTransformation;
@@ -49,7 +49,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         if(intent.hasExtra("singleMovieDetailsObj")){
 
-            Result singleMovieDetails = intent.getParcelableExtra("singleMovieDetailsObj");
+            MdbSingleMovieResult singleMovieDetails = intent.getParcelableExtra("singleMovieDetailsObj");
 
             movieNameTextView = (TextView) findViewById(R.id.movieNameTextView);
             moviePosterImageView = (ImageView) findViewById(R.id.moviePosterImageView);

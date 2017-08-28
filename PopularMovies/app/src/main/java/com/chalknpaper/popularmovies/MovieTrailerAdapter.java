@@ -16,7 +16,6 @@ import com.chalknpaper.popularmovies.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
 import java.net.URL;
-import java.util.ArrayList;
 
 /**
  * Created by samarsingh on 21/08/17.
@@ -27,9 +26,8 @@ public class MovieTrailerAdapter extends RecyclerView.Adapter<MovieTrailerAdapte
     ListItemTrailerBinding mListItemTrailerBinding;
 
     private static final String TAG = MovieTrailerAdapter.class.getSimpleName();
-    private Activity activity;
-    private ArrayList trailerImageList;
     private MdbVideoTrailerResult mMdbVideoTrailerResult;
+    Activity activity;
     Context mContext;
 
     public MovieTrailerAdapter(Activity activity) {
@@ -64,13 +62,13 @@ public class MovieTrailerAdapter extends RecyclerView.Adapter<MovieTrailerAdapte
         holder.mListItemTrailerBinding.videoPreviewImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                playYouTubeTrailed(position);
+                playYouTubeTrailer(position);
             }
         });
 
     }
 
-    private void playYouTubeTrailed(int position) {
+    private void playYouTubeTrailer(int position) {
         try {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" +
                     mMdbVideoTrailerResult.getResults().get(position).getKey()));

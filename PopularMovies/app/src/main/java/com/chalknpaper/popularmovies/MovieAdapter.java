@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.chalknpaper.popularmovies.data.MdbPageResult;
-import com.chalknpaper.popularmovies.data.Result;
+import com.chalknpaper.popularmovies.data.MdbSingleMovieResult;
 import com.chalknpaper.popularmovies.utilities.NetworkUtils;
 import com.chalknpaper.popularmovies.utilities.RoundedTransformation;
 import com.squareup.picasso.Picasso;
@@ -41,7 +41,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHo
      * The interface that receives onClick messages.
      */
     public interface ListItemClickListener {
-        void onListItemClick(Result clickedItemIndex);
+        void onListItemClick(MdbSingleMovieResult clickedItemIndex);
     }
 
     // COMPLETED (4) Add a ListItemClickListener as a parameter to the constructor and store it in mOnClickListener
@@ -98,7 +98,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHo
     @Override
     public void onBindViewHolder(NumberViewHolder holder, int position) {
         Log.d(TAG, "#" + position);
-            Result singleMovieDetails = mMovieData.getResults().get(position);
+            MdbSingleMovieResult singleMovieDetails = mMovieData.getMdbSingleMovieResults().get(position);
             String mMoviePosterPath = singleMovieDetails.getposter_path();
             URL mPosterUrl = NetworkUtils.buildUrlPoster(mMoviePosterPath);
 
@@ -119,7 +119,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHo
      */
     @Override
     public int getItemCount() {
-        return mMovieData.getResults().size();
+        return mMovieData.getMdbSingleMovieResults().size();
     }
 
     // COMPLETED (5) Implement OnClickListener in the NumberViewHolder class
@@ -156,7 +156,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHo
         @Override
         public void onClick(View v) {
             int clickedPosition = getAdapterPosition();
-            Result singleMovieDetails = mMovieData.getResults().get(clickedPosition);
+            MdbSingleMovieResult singleMovieDetails = mMovieData.getMdbSingleMovieResults().get(clickedPosition);
             mOnClickListener.onListItemClick(singleMovieDetails);
         }
     }
