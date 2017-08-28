@@ -15,27 +15,27 @@ import java.util.List;
         "id",
         "results"
 })
-public class MdbVideoTrailerResult implements Parcelable {
+public class MdbVideoTrailersResult implements Parcelable {
 
     @JsonProperty("id")
     private int id;
     @JsonProperty("results")
     private List<MdbSingleTrailerResult> results = null;
-    public final static Parcelable.Creator<MdbVideoTrailerResult> CREATOR = new Creator<MdbVideoTrailerResult>() {
+    public final static Parcelable.Creator<MdbVideoTrailersResult> CREATOR = new Creator<MdbVideoTrailersResult>() {
 
 
         @SuppressWarnings({
                 "unchecked"
         })
-        public MdbVideoTrailerResult createFromParcel(Parcel in) {
-            MdbVideoTrailerResult instance = new MdbVideoTrailerResult();
+        public MdbVideoTrailersResult createFromParcel(Parcel in) {
+            MdbVideoTrailersResult instance = new MdbVideoTrailersResult();
             instance.id = ((int) in.readValue((int.class.getClassLoader())));
             in.readList(instance.results, (MdbSingleMovieResult.class.getClassLoader()));
             return instance;
         }
 
-        public MdbVideoTrailerResult[] newArray(int size) {
-            return (new MdbVideoTrailerResult[size]);
+        public MdbVideoTrailersResult[] newArray(int size) {
+            return (new MdbVideoTrailersResult[size]);
         }
 
     };

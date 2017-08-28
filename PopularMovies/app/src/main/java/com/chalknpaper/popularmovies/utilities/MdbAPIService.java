@@ -1,7 +1,7 @@
 package com.chalknpaper.popularmovies.utilities;
 
 import com.chalknpaper.popularmovies.data.MdbPageResult;
-import com.chalknpaper.popularmovies.data.MdbVideoTrailerResult;
+import com.chalknpaper.popularmovies.data.MdbVideoTrailersResult;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 
 import java.util.concurrent.TimeUnit;
@@ -33,7 +33,7 @@ public interface MdbAPIService {
 
 
     @GET("movie/{movieid}/videos")
-    Call<MdbVideoTrailerResult> mdbFetchTrailerResults(
+    Call<MdbVideoTrailersResult> mdbFetchTrailerResults(
             @Path("movieid") String movieid,
             @Query(value = "api_key", encoded = true) String apikey,
             @Query(value = "language") String language);

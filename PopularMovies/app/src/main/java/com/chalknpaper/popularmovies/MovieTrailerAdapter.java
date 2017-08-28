@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.chalknpaper.popularmovies.data.MdbSingleTrailerResult;
-import com.chalknpaper.popularmovies.data.MdbVideoTrailerResult;
+import com.chalknpaper.popularmovies.data.MdbVideoTrailersResult;
 import com.chalknpaper.popularmovies.databinding.ListItemTrailerBinding;
 import com.chalknpaper.popularmovies.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
@@ -26,7 +26,7 @@ public class MovieTrailerAdapter extends RecyclerView.Adapter<MovieTrailerAdapte
     ListItemTrailerBinding mListItemTrailerBinding;
 
     private static final String TAG = MovieTrailerAdapter.class.getSimpleName();
-    private MdbVideoTrailerResult mMdbVideoTrailerResult;
+    private MdbVideoTrailersResult mMdbVideoTrailersResult;
     Activity activity;
     Context mContext;
 
@@ -52,7 +52,7 @@ public class MovieTrailerAdapter extends RecyclerView.Adapter<MovieTrailerAdapte
 
 //        holder.videoPreviewImage.setImageDrawable((Drawable) trailerImageList.get(position));
         //       holder.videoPreviewImage.setBackgroundColor(0xe6e600);
-        MdbSingleTrailerResult singleMovieTrailerResult = mMdbVideoTrailerResult.getResults().get(position);
+        MdbSingleTrailerResult singleMovieTrailerResult = mMdbVideoTrailersResult.getResults().get(position);
         String trailerKey = singleMovieTrailerResult.getKey();
         URL mPosterUrl = NetworkUtils.buildUrlTrailer(trailerKey);
         // Use Picasso here to load images onto Grid
@@ -71,18 +71,18 @@ public class MovieTrailerAdapter extends RecyclerView.Adapter<MovieTrailerAdapte
     private void playYouTubeTrailer(int position) {
         try {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" +
-                    mMdbVideoTrailerResult.getResults().get(position).getKey()));
+                    mMdbVideoTrailersResult.getResults().get(position).getKey()));
             mContext.startActivity(intent);
         } catch (Exception ex) {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" +
-                    mMdbVideoTrailerResult.getResults().get(position).getKey()));
+                    mMdbVideoTrailersResult.getResults().get(position).getKey()));
             mContext.startActivity(intent);
         }
     }
 
     @Override
     public int getItemCount() {
-        return mMdbVideoTrailerResult.getResults().size();
+        return mMdbVideoTrailersResult.getResults().size();
     }
 
     public class TrailerViewHolder extends RecyclerView.ViewHolder {
@@ -95,8 +95,8 @@ public class MovieTrailerAdapter extends RecyclerView.Adapter<MovieTrailerAdapte
         }
     }
 
-    public void setMovieData(MdbVideoTrailerResult movieTrailerData) {
-        mMdbVideoTrailerResult = movieTrailerData;
+    public void setMovieData(MdbVideoTrailersResult movieTrailerData) {
+        mMdbVideoTrailersResult = movieTrailerData;
         notifyDataSetChanged();
     }
 }

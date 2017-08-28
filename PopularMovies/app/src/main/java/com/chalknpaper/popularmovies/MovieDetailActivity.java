@@ -11,7 +11,7 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.chalknpaper.popularmovies.data.MdbVideoTrailerResult;
+import com.chalknpaper.popularmovies.data.MdbVideoTrailersResult;
 import com.chalknpaper.popularmovies.data.MdbSingleMovieResult;
 import com.chalknpaper.popularmovies.utilities.MdbAPIService;
 import com.chalknpaper.popularmovies.utilities.NetworkUtils;
@@ -89,9 +89,9 @@ public class MovieDetailActivity extends AppCompatActivity {
 
             MdbAPIService mdbAPIService = MdbAPIService.retrofit.create(MdbAPIService.class);
             mdbAPIService.mdbFetchTrailerResults(String.valueOf(singleMovieDetails.getId()),
-                    BuildConfig.MOVIEDB_API_KEY,"en-US").enqueue(new Callback<MdbVideoTrailerResult>() {
+                    BuildConfig.MOVIEDB_API_KEY,"en-US").enqueue(new Callback<MdbVideoTrailersResult>() {
                 @Override
-                public void onResponse(Call<MdbVideoTrailerResult> call, Response<MdbVideoTrailerResult> response) {
+                public void onResponse(Call<MdbVideoTrailersResult> call, Response<MdbVideoTrailersResult> response) {
 
 
                     if (response != null) {
@@ -107,7 +107,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<MdbVideoTrailerResult> call, Throwable t) {
+                public void onFailure(Call<MdbVideoTrailersResult> call, Throwable t) {
 
                     Log.d(this.getClass().getSimpleName(),"Access failed");
                 }
