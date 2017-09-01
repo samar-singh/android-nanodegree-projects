@@ -22,8 +22,8 @@ public class MovieContentProvider extends ContentProvider {
     // Define final integer constants for the directory of tasks and a single item.
     // It's convention to use 100, 200, 300, etc for directories,
     // and related ints (101, 102, ..) for items in that directory.
-    public static final int TASKS = 100;
-    public static final int TASK_WITH_ID = 101;
+    public static final int FAVOURITE_MOVIES = 100;
+    public static final int FAVOURITE_MOVIE = 101;
 
     // CDeclare a static variable for the Uri matcher that you construct
     private static final UriMatcher sUriMatcher = buildUriMatcher();
@@ -43,8 +43,8 @@ public class MovieContentProvider extends ContentProvider {
           For each kind of uri you may want to access, add the corresponding match with addURI.
           The two calls below add matches for the task directory and a single item by ID.
          */
-        uriMatcher.addURI(MovieContract.AUTHORITY, MovieContract.PATH_FAVOURITES, TASKS);
-        uriMatcher.addURI(MovieContract.AUTHORITY, MovieContract.PATH_FAVOURITES + "/#", TASK_WITH_ID);
+        uriMatcher.addURI(MovieContract.AUTHORITY, MovieContract.PATH_FAVOURITES, FAVOURITE_MOVIES);
+        uriMatcher.addURI(MovieContract.AUTHORITY, MovieContract.PATH_FAVOURITES + "/#", FAVOURITE_MOVIE);
 
         return uriMatcher;
     }
@@ -79,7 +79,7 @@ public class MovieContentProvider extends ContentProvider {
         Uri returnUri; // URI to be returned
 
         switch (match) {
-            case TASKS:
+            case FAVOURITE_MOVIES:
                 // Insert new values into the database
                 // Inserting values into tasks table
                 long id = db.insert(TABLE_NAME, null, values);
@@ -118,7 +118,7 @@ public class MovieContentProvider extends ContentProvider {
         // Query for the tasks directory and write a default case
         switch (match) {
             // Query for the tasks directory
-            case TASKS:
+            case FAVOURITE_MOVIES:
                 retCursor =  db.query(TABLE_NAME,
                         projection,
                         selection,
@@ -155,7 +155,7 @@ public class MovieContentProvider extends ContentProvider {
         // [Hint] Use selections to delete an item by its row ID
         switch (match) {
             // Handle the single item case, recognized by the ID included in the URI path
-            case TASK_WITH_ID:
+            case FAVOURITE_MOVIE:
                 // Get the task ID from the URI path
                 String id = uri.getPathSegments().get(1);
                 // Use selections/selectionArgs to filter for this ID

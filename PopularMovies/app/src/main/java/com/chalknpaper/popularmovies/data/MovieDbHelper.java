@@ -11,14 +11,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class MovieDbHelper extends SQLiteOpenHelper {
 
     // The name of the database
-    private static final String DATABASE_NAME = "tasksDb.db";
+    private static final String DATABASE_NAME = "moviesDb.db";
 
     // If you change the database schema, you must increment the database version
     private static final int VERSION = 1;
 
 
     // Constructor
-    MovieDbHelper(Context context) {
+    public MovieDbHelper(Context context) {
         super(context, DATABASE_NAME, null, VERSION);
     }
 
@@ -30,16 +30,17 @@ public class MovieDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         // Create tasks table (careful to follow SQL formatting rules)
-        final String CREATE_TABLE = "CREATE TABLE "  + MovieContract.MovieEntry.TABLE_NAME + " (" +
-                MovieContract.MovieEntry._ID                + " INTEGER PRIMARY KEY, " +
+        final String CREATE_TABLE = "CREATE TABLE "  + MovieContract.MovieEntry.TABLE_NAME + "(" +
+                MovieContract.MovieEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 MovieContract.MovieEntry.COLUMN_MOVIENAME + " TEXT NOT NULL, " +
                 MovieContract.MovieEntry.COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
-                MovieContract.MovieEntry.COLUMN_POSTERIMAGEKEY    + " TEXT NOT NULL, " +
-                MovieContract.MovieEntry.COLUMN_LAUNCHYEAR + "TEXT NOT NULL, " +
-                MovieContract.MovieEntry.COLUMN_RELEASE_DATE + "TEXT NOT NULL, " +
-                MovieContract.MovieEntry.COLUMN_RUNTIME + "TEXT NOT NULL, " +
-                MovieContract.MovieEntry.COLUMN_RATING + "TEXT NOT NULL, " +
-                MovieContract.MovieEntry.COLUMN_TRAILERKEY + "TEXT NOT NULL, " + ")";
+                MovieContract.MovieEntry.COLUMN_POSTERIMAGEKEY + " TEXT NOT NULL, " +
+                MovieContract.MovieEntry.COLUMN_LAUNCHYEAR + " TEXT NOT NULL, " +
+                MovieContract.MovieEntry.COLUMN_RELEASE_DATE + " TEXT NOT NULL, " +
+                MovieContract.MovieEntry.COLUMN_RUNTIME + " TEXT NOT NULL, " +
+                MovieContract.MovieEntry.COLUMN_RATING + " TEXT NOT NULL, " +
+                MovieContract.MovieEntry.COLUMN_TRAILERKEY + " TEXT NOT NULL, " +
+                MovieContract.MovieEntry.COLUMN_TIMESTAMP + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
 
         db.execSQL(CREATE_TABLE);
     }

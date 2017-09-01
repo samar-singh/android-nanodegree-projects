@@ -1,6 +1,10 @@
 package com.chalknpaper.popularmovies;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -8,11 +12,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.chalknpaper.popularmovies.data.MdbVideoTrailersResult;
 import com.chalknpaper.popularmovies.data.MdbSingleMovieResult;
+import com.chalknpaper.popularmovies.data.MdbVideoTrailersResult;
+import com.chalknpaper.popularmovies.data.MovieContract;
+import com.chalknpaper.popularmovies.data.MovieDbHelper;
 import com.chalknpaper.popularmovies.utilities.MdbAPIService;
 import com.chalknpaper.popularmovies.utilities.NetworkUtils;
 import com.chalknpaper.popularmovies.utilities.RoundedTransformation;
@@ -37,6 +44,9 @@ public class MovieDetailActivity extends AppCompatActivity {
     private MovieTrailerAdapter mMovieTrailerAdapter;
     private RecyclerView mRecyclerView;
     private ArrayList trailerImageList ;
+    MdbSingleMovieResult singleMovieDetails;
+    String mMovieTrailerKey;
+    private SQLiteDatabase mDb;
 
 
 
@@ -45,11 +55,13 @@ public class MovieDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
 
+        MovieDbHelper dbHelper = new MovieDbHelper(this);
+        mDb = dbHelper.getWritableDatabase();
         Intent intent = getIntent();
 
         if(intent.hasExtra("singleMovieDetailsObj")){
 
-            MdbSingleMovieResult singleMovieDetails = intent.getParcelableExtra("singleMovieDetailsObj");
+            singleMovieDetails = intent.getParcelableExtra("singleMovieDetailsObj");
 
             movieNameTextView = (TextView) findViewById(R.id.movieNameTextView);
             moviePosterImageView = (ImageView) findViewById(R.id.moviePosterImageView);
@@ -101,6 +113,9 @@ public class MovieDetailActivity extends AppCompatActivity {
 
                         mMovieTrailerAdapter.setMovieData(response.body());
                         mRecyclerView.setAdapter(mMovieTrailerAdapter);
+                        //todo : need to get all the returned trailer thumbnails results and store
+                        // for now just setting th Id to chekc DB functionality
+                        mMovieTrailerKey = String.valueOf(response.body().getId());
                     } else {
                         Log.d(this.getClass().getSimpleName(),"could not retrieve Trailer data");
                     }
@@ -115,5 +130,25 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    public void favouriteSelect(View view) {
+
+        //// Completed: 29/08/17 write to local database via ContentProvider
+        //view.setBackgroundColor(Color.GREEN);
+        ColorDrawable color = (ColorDrawable) view.getBackground();
+        int colorId = color.getColor();
+        ContentValues contentValues = new ContentValues();
+        //// Completed: 31/08/17 add all the required fields to the database insert that are mentioned "NOT NULL" in the dbhelper
+        contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIENAME,singleMovieDetails.getTitle());
+        contentValues.put(MovieContract.MovieEntry.COLUMN_DESCRIPTION,singleMovieDetails.getOverview());
+        contentValues.put(MovieContract.MovieEntry.COLUMN_POSTERIMAGEKEY,singleMovieDetails.getposter_path());
+        contentValues.put(MovieContract.MovieEntry.COLUMN_LAUNCHYEAR,"2017");
+        contentValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE,singleMovieDetails.getrelease_date());
+        contentValues.put(MovieContract.MovieEntry.COLUMN_RUNTIME,"2hrs");
+        contentValues.put(MovieContract.MovieEntry.COLUMN_RATING,singleMovieDetails.getvote_average());
+        contentValues.put(MovieContract.MovieEntry.COLUMN_TRAILERKEY,mMovieTrailerKey);
+
+        Uri uri = getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues);
     }
 }
