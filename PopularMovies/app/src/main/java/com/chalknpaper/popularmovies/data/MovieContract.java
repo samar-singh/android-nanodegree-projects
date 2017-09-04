@@ -42,6 +42,7 @@ public class MovieContract {
 
         // Since TaskEntry implements the interface "BaseColumns", it has an automatically produced
         // "_ID" column in addition to the two below
+        public static final String COLUMN_MOVIEID = "movieid";
         public static final String COLUMN_MOVIENAME = "name";
         public static final String COLUMN_POSTERIMAGEKEY = "posterimagekey";
         public static final String COLUMN_LAUNCHYEAR = "launchyear";

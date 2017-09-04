@@ -1,11 +1,15 @@
 package com.chalknpaper.popularmovies;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -45,7 +49,6 @@ public class MovieDetailActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private ArrayList trailerImageList ;
     MdbSingleMovieResult singleMovieDetails;
-    String mMovieTrailerKey;
     private SQLiteDatabase mDb;
 
 
@@ -115,7 +118,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                         mRecyclerView.setAdapter(mMovieTrailerAdapter);
                         //todo : need to get all the returned trailer thumbnails results and store
                         // for now just setting th Id to chekc DB functionality
-                        mMovieTrailerKey = String.valueOf(response.body().getId());
+
                     } else {
                         Log.d(this.getClass().getSimpleName(),"could not retrieve Trailer data");
                     }
@@ -134,21 +137,43 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     public void favouriteSelect(View view) {
 
+        final int defaultColourId = -17613;
         //// Completed: 29/08/17 write to local database via ContentProvider
-        //view.setBackgroundColor(Color.GREEN);
-        ColorDrawable color = (ColorDrawable) view.getBackground();
-        int colorId = color.getColor();
-        ContentValues contentValues = new ContentValues();
-        //// Completed: 31/08/17 add all the required fields to the database insert that are mentioned "NOT NULL" in the dbhelper
-        contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIENAME,singleMovieDetails.getTitle());
-        contentValues.put(MovieContract.MovieEntry.COLUMN_DESCRIPTION,singleMovieDetails.getOverview());
-        contentValues.put(MovieContract.MovieEntry.COLUMN_POSTERIMAGEKEY,singleMovieDetails.getposter_path());
-        contentValues.put(MovieContract.MovieEntry.COLUMN_LAUNCHYEAR,"2017");
-        contentValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE,singleMovieDetails.getrelease_date());
-        contentValues.put(MovieContract.MovieEntry.COLUMN_RUNTIME,"2hrs");
-        contentValues.put(MovieContract.MovieEntry.COLUMN_RATING,singleMovieDetails.getvote_average());
-        contentValues.put(MovieContract.MovieEntry.COLUMN_TRAILERKEY,mMovieTrailerKey);
 
-        Uri uri = getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues);
+        boolean isFavourite = isFavorite(singleMovieDetails.getId());
+
+        if(isFavourite){
+            view.getBackground().setColorFilter(ContextCompat.getColor(this, android.R.color.holo_orange_light), PorterDuff.Mode.MULTIPLY);
+        }else {
+            view.setBackgroundColor(Color.GREEN);
+            //ColorDrawable color = (ColorDrawable) view.getBackground();
+            //int colorId = color.getColor();
+            ContentValues contentValues = new ContentValues();
+            //// Completed: 31/08/17 add all the required fields to the database insert that are mentioned "NOT NULL" in the dbhelper
+            contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIEID, singleMovieDetails.getId());
+            contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIENAME, singleMovieDetails.getTitle());
+            contentValues.put(MovieContract.MovieEntry.COLUMN_DESCRIPTION, singleMovieDetails.getOverview());
+            contentValues.put(MovieContract.MovieEntry.COLUMN_POSTERIMAGEKEY, singleMovieDetails.getposter_path());
+            contentValues.put(MovieContract.MovieEntry.COLUMN_LAUNCHYEAR, "2017");
+            contentValues.put(MovieContract.MovieEntry.COLUMN_RELEASE_DATE, singleMovieDetails.getrelease_date());
+            contentValues.put(MovieContract.MovieEntry.COLUMN_RUNTIME, "2hrs");
+            contentValues.put(MovieContract.MovieEntry.COLUMN_RATING, singleMovieDetails.getvote_average());
+
+            Uri uri = getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues);
+        }
+    }
+
+    private boolean isFavorite(int movieId) {
+        Cursor cursor = getContentResolver().query(ContentUris.withAppendedId(MovieContract.MovieEntry.CONTENT_URI, movieId),
+                null,
+                null,
+                null,
+                null);
+
+        boolean ret = (cursor != null && cursor.getCount() > 0);
+        if (cursor != null) {
+            cursor.close();
+        }
+        return ret;
     }
 }

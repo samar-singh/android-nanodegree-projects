@@ -127,6 +127,25 @@ public class MovieContentProvider extends ContentProvider {
                         null,
                         sortOrder);
                 break;
+            case FAVOURITE_MOVIE:
+
+                // selection and args
+                // uri
+
+                final int INDEX_OF_ID_TOKEN = 1;
+                String id = uri.getPathSegments().get(INDEX_OF_ID_TOKEN);
+                String _selection = "_id=?";
+                String[] _selectionArgs = new String[]{id};
+
+                retCursor = db.query(MovieContract.MovieEntry.TABLE_NAME,
+                        projection,
+                        _selection,
+                        _selectionArgs,
+                        null,
+                        null,
+                        null);
+
+                break;
             // Default exception
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);

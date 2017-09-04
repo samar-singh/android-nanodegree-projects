@@ -32,6 +32,7 @@ public class MovieDbHelper extends SQLiteOpenHelper {
         // Create tasks table (careful to follow SQL formatting rules)
         final String CREATE_TABLE = "CREATE TABLE "  + MovieContract.MovieEntry.TABLE_NAME + "(" +
                 MovieContract.MovieEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                MovieContract.MovieEntry.COLUMN_MOVIEID + " TEXT NOT NULL, " +
                 MovieContract.MovieEntry.COLUMN_MOVIENAME + " TEXT NOT NULL, " +
                 MovieContract.MovieEntry.COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
                 MovieContract.MovieEntry.COLUMN_POSTERIMAGEKEY + " TEXT NOT NULL, " +
