@@ -137,13 +137,20 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     public void favouriteSelect(View view) {
 
-        final int defaultColourId = -17613;
+        //final int defaultColourId = -17613;
         //// Completed: 29/08/17 write to local database via ContentProvider
+        int numDeletedItems = 0;
 
         boolean isFavourite = isFavorite(singleMovieDetails.getId());
 
         if(isFavourite){
             view.getBackground().setColorFilter(ContextCompat.getColor(this, android.R.color.holo_orange_light), PorterDuff.Mode.MULTIPLY);
+            numDeletedItems = getContentResolver().delete(ContentUris.withAppendedId(MovieContract.MovieEntry.CONTENT_URI, Long.parseLong(MovieContract.MovieEntry._ID)),
+                    null,
+                    null);
+            if(numDeletedItems == 0){
+                Log.d(this.getClass().getSimpleName(),"unable to delete dupliate movie: " + singleMovieDetails.getTitle());
+            }
         }else {
             view.setBackgroundColor(Color.GREEN);
             //ColorDrawable color = (ColorDrawable) view.getBackground();

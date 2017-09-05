@@ -50,7 +50,6 @@ public class MovieContract {
         public static final String COLUMN_RATING = "rating";
         public static final String COLUMN_RELEASE_DATE = "releasedate";
         public static final String COLUMN_DESCRIPTION = "description";
-        public static final String COLUMN_TRAILERKEY = "trailerkey";
         public static final String COLUMN_TIMESTAMP = "timestamp";
 
     }

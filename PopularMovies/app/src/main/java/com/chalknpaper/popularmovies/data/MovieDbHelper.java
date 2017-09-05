@@ -14,7 +14,7 @@ public class MovieDbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "moviesDb.db";
 
     // If you change the database schema, you must increment the database version
-    private static final int VERSION = 1;
+    private static final int VERSION = 6;
 
 
     // Constructor
@@ -40,7 +40,6 @@ public class MovieDbHelper extends SQLiteOpenHelper {
                 MovieContract.MovieEntry.COLUMN_RELEASE_DATE + " TEXT NOT NULL, " +
                 MovieContract.MovieEntry.COLUMN_RUNTIME + " TEXT NOT NULL, " +
                 MovieContract.MovieEntry.COLUMN_RATING + " TEXT NOT NULL, " +
-                MovieContract.MovieEntry.COLUMN_TRAILERKEY + " TEXT NOT NULL, " +
                 MovieContract.MovieEntry.COLUMN_TIMESTAMP + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
 
         db.execSQL(CREATE_TABLE);
