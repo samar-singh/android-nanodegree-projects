@@ -45,11 +45,14 @@ public class MovieDetailActivity extends AppCompatActivity {
     private TextView movieRatingTextView;
     private TextView movieReleaseDateTextView;
     private TextView movieDescriptionTextView;
+    private TextView movieMarkAsFavouriteTextView;
     private MovieTrailerAdapter mMovieTrailerAdapter;
     private RecyclerView mRecyclerView;
     private ArrayList trailerImageList ;
     MdbSingleMovieResult singleMovieDetails;
     private SQLiteDatabase mDb;
+    private int mMovieId;
+    boolean isFavourite = false;
 
 
 
@@ -74,6 +77,17 @@ public class MovieDetailActivity extends AppCompatActivity {
             movieReleaseDateTextView = (TextView) findViewById(R.id.movieReleaseDateTextView);
             movieDescriptionTextView = (TextView) findViewById(R.id.movieDescriptionTextView);
             movieDescriptionTextView.setMovementMethod(new ScrollingMovementMethod());
+            movieMarkAsFavouriteTextView = (TextView) findViewById(R.id.movieMarkAsFavouriteTextView);
+
+            mMovieId = singleMovieDetails.getId();
+            isFavourite = isFavorite(mMovieId);
+
+            if(isFavourite){
+                movieMarkAsFavouriteTextView.getBackground().setColorFilter(ContextCompat.getColor(this, android.R.color.holo_orange_light), PorterDuff.Mode.MULTIPLY);
+
+            }else {
+                movieMarkAsFavouriteTextView.setBackgroundColor(Color.GREEN);
+            }
 
             movieNameTextView.setText(singleMovieDetails.getTitle());
             String mMoviePosterPath = singleMovieDetails.getposter_path();
@@ -141,11 +155,9 @@ public class MovieDetailActivity extends AppCompatActivity {
         //// Completed: 29/08/17 write to local database via ContentProvider
         int numDeletedItems = 0;
 
-        boolean isFavourite = isFavorite(singleMovieDetails.getId());
-
         if(isFavourite){
             view.getBackground().setColorFilter(ContextCompat.getColor(this, android.R.color.holo_orange_light), PorterDuff.Mode.MULTIPLY);
-            numDeletedItems = getContentResolver().delete(ContentUris.withAppendedId(MovieContract.MovieEntry.CONTENT_URI, Long.parseLong(MovieContract.MovieEntry._ID)),
+            numDeletedItems = getApplicationContext().getContentResolver().delete(ContentUris.withAppendedId(MovieContract.MovieEntry.CONTENT_URI, Long.parseLong(MovieContract.MovieEntry._ID)),
                     null,
                     null);
             if(numDeletedItems == 0){
@@ -166,12 +178,12 @@ public class MovieDetailActivity extends AppCompatActivity {
             contentValues.put(MovieContract.MovieEntry.COLUMN_RUNTIME, "2hrs");
             contentValues.put(MovieContract.MovieEntry.COLUMN_RATING, singleMovieDetails.getvote_average());
 
-            Uri uri = getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues);
+            Uri uri = getApplicationContext().getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues);
         }
     }
 
     private boolean isFavorite(int movieId) {
-        Cursor cursor = getContentResolver().query(ContentUris.withAppendedId(MovieContract.MovieEntry.CONTENT_URI, movieId),
+        Cursor cursor = getApplicationContext().getContentResolver().query(ContentUris.withAppendedId(MovieContract.MovieEntry.CONTENT_URI, movieId),
                 null,
                 null,
                 null,

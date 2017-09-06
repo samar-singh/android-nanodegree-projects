@@ -102,7 +102,7 @@
         app:layout_constraintTop_toBottomOf="@+id/movieRunTimeTextView" />
 
     <TextView
-        android:id="@+id/movieMarkAsFavouritteTextView"
+        android:id="@+id/movieMarkAsFavouriteTextView"
         android:layout_width="81dp"
         android:layout_height="33dp"
         android:layout_marginBottom="8dp"
@@ -141,7 +141,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintTop_toBottomOf="@+id/movieMarkAsFavouritteTextView"
+        app:layout_constraintTop_toBottomOf="@+id/movieMarkAsFavouriteTextView"
         android:layout_marginTop="8dp"
         android:scrollbars="vertical"
         android:layout_marginStart="8dp"
