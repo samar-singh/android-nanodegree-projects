@@ -134,7 +134,7 @@ public class MovieContentProvider extends ContentProvider {
 
                 final int INDEX_OF_ID_TOKEN = 1;
                 String id = uri.getPathSegments().get(INDEX_OF_ID_TOKEN);
-                String _selection = "_id=?";
+                String _selection = MovieContract.MovieEntry.COLUMN_MOVIEID + "=?";
                 String[] _selectionArgs = new String[]{id};
 
                 retCursor = db.query(MovieContract.MovieEntry.TABLE_NAME,

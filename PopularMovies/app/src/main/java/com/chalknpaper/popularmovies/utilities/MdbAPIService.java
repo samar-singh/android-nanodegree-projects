@@ -39,6 +39,13 @@ public interface MdbAPIService {
             @Query(value = "language") String language);
 
 
+    @GET("movie/{movieid}/reviews")
+    Call<MdbVideoTrailersResult> mdbFetchReviewsResults(
+            @Path("movieid") String movieid,
+            @Query(value = "api_key", encoded = true) String apikey,
+            @Query(value = "language") String language);
+
+
     OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
             .addNetworkInterceptor(new StethoInterceptor())
             .connectTimeout(60, TimeUnit.SECONDS)

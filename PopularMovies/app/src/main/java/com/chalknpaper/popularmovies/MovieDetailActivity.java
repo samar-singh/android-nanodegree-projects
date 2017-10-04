@@ -83,10 +83,9 @@ public class MovieDetailActivity extends AppCompatActivity {
             isFavourite = isFavorite(mMovieId);
 
             if(isFavourite){
-                movieMarkAsFavouriteTextView.getBackground().setColorFilter(ContextCompat.getColor(this, android.R.color.holo_orange_light), PorterDuff.Mode.MULTIPLY);
-
-            }else {
                 movieMarkAsFavouriteTextView.setBackgroundColor(Color.GREEN);
+            }else {
+                movieMarkAsFavouriteTextView.getBackground().setColorFilter(ContextCompat.getColor(this, android.R.color.holo_orange_light), PorterDuff.Mode.MULTIPLY);
             }
 
             movieNameTextView.setText(singleMovieDetails.getTitle());
@@ -189,7 +188,8 @@ public class MovieDetailActivity extends AppCompatActivity {
                 null,
                 null);
 
-        boolean ret = (cursor != null && cursor.getCount() > 0);
+        boolean ret ;
+        ret = (cursor != null && cursor.getCount() > 0);
         if (cursor != null) {
             cursor.close();
         }

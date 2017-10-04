@@ -103,12 +103,12 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_sort_popularity:
                 moviePreference = "popular";
                 break;
-
             case R.id.action_sort_rating:
                 moviePreference = "top_rated";
                 break;
             case R.id.action_sort_favourite:
                 moviePreference = "favourites";
+                break;
             default:
                 Toast.makeText(this, "invalid choice", Toast.LENGTH_LONG).show();
 
@@ -269,13 +269,37 @@ public class MainActivity extends AppCompatActivity
         if (data != null
                 && data.getCount() > 0) {
             data.moveToFirst();
-            for (int i = 0; i <= data.getCount(); i++) {
+            do{
                 MdbSingleMovieResult mdbSingleMovieResult = new MdbSingleMovieResult();
                 String movieTitle = data.getString(data.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIENAME));
-                Log.d(this.getClass().getSimpleName(),"movieTitle: " + movieTitle);
-            }
-            mdbPageResult.setMdbSingleMovieResults(mdbSingleMovieResults);
+                int movieId = data.getInt(data.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIEID));
+                String movieDescription = data.getString(data.getColumnIndex(MovieContract.MovieEntry.COLUMN_DESCRIPTION));
+                String moviePosterImageKey = data.getString(data.getColumnIndex(MovieContract.MovieEntry.COLUMN_POSTERIMAGEKEY));
+                String movieLaunchYear = data.getString(data.getColumnIndex(MovieContract.MovieEntry.COLUMN_LAUNCHYEAR));
+                String movieReleaseDate = data.getString(data.getColumnIndex(MovieContract.MovieEntry.COLUMN_RELEASE_DATE));
+                String movieRuntime = data.getString(data.getColumnIndex(MovieContract.MovieEntry.COLUMN_RUNTIME));
+                String movieRating = data.getString(data.getColumnIndex(MovieContract.MovieEntry.COLUMN_RATING));
 
+                Log.d(this.getClass().getSimpleName(),"movieTitle: " + movieTitle);
+                mdbSingleMovieResult.setId(movieId);
+                mdbSingleMovieResult.setTitle(movieTitle);
+                mdbSingleMovieResult.setOverview(movieDescription);
+                mdbSingleMovieResult.setposter_path(moviePosterImageKey);
+                mdbSingleMovieResult.setrelease_date(movieReleaseDate);
+                mdbSingleMovieResult.setvote_average(Double.parseDouble(movieRating));
+                mdbSingleMovieResults.add(mdbSingleMovieResult);
+
+            }while(data.moveToNext());
+            mdbPageResult.setMdbSingleMovieResults(mdbSingleMovieResults);
+            mMovieAdapter = new MovieAdapter((MovieAdapter.ListItemClickListener) context);
+            mLoadingIndicator.setVisibility(View.INVISIBLE);
+            showMovieDataView();
+            mRecyclerView.setAdapter(mMovieAdapter);
+
+            mMovieAdapter.setMovieData(mdbPageResult);
+
+        }else{
+            showErrorMessage();
         }
     }
     @Override
