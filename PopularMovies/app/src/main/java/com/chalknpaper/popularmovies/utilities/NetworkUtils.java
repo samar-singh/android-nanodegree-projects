@@ -21,69 +21,24 @@ package com.chalknpaper.popularmovies.utilities;
 
 import android.net.Uri;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Scanner;
 
 /**
  * These utilities will be used to communicate with the network.
  */
 public class NetworkUtils {
 
-
-
-    private final static String PARAM_THEMOVIEDB_BASE_URL =
-            "http://api.themoviedb.org/3";
     private final static String PARAM_POSTER_BASE_URL =
             "http://image.tmdb.org";
+    private final static String PARAM_TRAILER_BASE_URL =
+            "http://img.youtube.com/vi";
+    private static final String PARAM_TRAILER_RESOLUTION_PIC = "mqdefault.jpg";
 
-    private final static String PARAM_QUERY_ITEM = "movie";
-    private final static String PARAM_SORT_BY_POPULAR= "popular";
-    private final static String PARAM_SORT_BY_RATING = "top_rated";
-
-
-    /*
-     * The sort field. One of stars, forks, or updated.
-     * Default: results are sorted by best match if no field is specified.
-     */
-    private final static String PARAM_API_KEY = "api_key";
 
     private final static String PARAM_POSTER_SIZE = "w185";
     private final static String PARAM_POSTER_PARAM_1 = "t";
     private final static String PARAM_POSTER_PARAM_2 = "p";
-
-
-    /**
-     * Builds the URL used to query GitHub.
-     *
-     * @param movieDbSortOrder The keyword that will be sorted for.
-     * @return The URL to use to query the MovieDb.
-     */
-    public static URL buildUrlMdb(String movieDbSortOrder) {
-        String sortUrlString = null;
-        if(movieDbSortOrder.matches("popular")){
-            sortUrlString =  PARAM_SORT_BY_POPULAR;
-        }else {
-            sortUrlString =  PARAM_SORT_BY_RATING;
-        }
-        Uri builtUri = Uri.parse(PARAM_THEMOVIEDB_BASE_URL).buildUpon()
-                .appendPath(PARAM_QUERY_ITEM)
-                .appendPath(sortUrlString)
-                .appendQueryParameter(PARAM_API_KEY, com.chalknpaper.popularmovies.BuildConfig.OPEN_WEATHER_MAP_API_KEY)
-                .build();
-
-        URL url = null;
-        try {
-            url = new URL(builtUri.toString());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-        return url;
-    }
 
 
     /**
@@ -111,29 +66,19 @@ public class NetworkUtils {
         return url;
     }
 
-    /**
-     * This method returns the entire result from the HTTP response.
-     *
-     * @param url The URL to fetch the HTTP response from.
-     * @return The contents of the HTTP response.
-     * @throws IOException Related to network and stream reading
-     */
-    public static String getResponseFromHttpUrl(URL url) throws IOException {
-        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+    public static URL buildUrlTrailer(String trailerId) {
+        Uri builtUri = Uri.parse(PARAM_TRAILER_BASE_URL).buildUpon()
+                .appendPath(trailerId)
+                .appendPath(PARAM_TRAILER_RESOLUTION_PIC)
+                .build();
+
+        URL url = null;
         try {
-            InputStream in = urlConnection.getInputStream();
-
-            Scanner scanner = new Scanner(in);
-            scanner.useDelimiter("\\A");
-
-            boolean hasInput = scanner.hasNext();
-            if (hasInput) {
-                return scanner.next();
-            } else {
-                return null;
-            }
-        } finally {
-            urlConnection.disconnect();
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
         }
+
+        return url;
     }
 }

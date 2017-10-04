@@ -2,11 +2,15 @@ package com.chalknpaper.popularmovies;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,18 +18,21 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.chalknpaper.popularmovies.data.SingleMovieDetails;
-import com.chalknpaper.popularmovies.utilities.MovieJsonUtils;
-import com.chalknpaper.popularmovies.utilities.NetworkUtils;
+import com.chalknpaper.popularmovies.data.MdbPageResult;
+import com.chalknpaper.popularmovies.data.MdbSingleMovieResult;
+import com.chalknpaper.popularmovies.data.MovieContract;
+import com.chalknpaper.popularmovies.utilities.MdbAPIService;
 
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
-        implements MovieAdapter.ListItemClickListener {
-
-    // --Commented out by Inspection (19/06/17, 7:39 PM):private static final String TAG = MainActivity.class.getSimpleName();
-    private ArrayList<SingleMovieDetails> mMovieData;
+        implements MovieAdapter.ListItemClickListener,
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     private final Context context = this;
     /*
@@ -37,6 +44,7 @@ public class MainActivity extends AppCompatActivity
     private ProgressBar mLoadingIndicator;
     private TextView mErrorMessageDisplay;
     private final String mDefaultPreference = "popular";
+    private static final int MOVIE_LOADER_ID = 0;
 // --Commented out by Inspection START (19/06/17, 7:39 PM):
 //    /*
 //     * If we hold a reference to our Toast, we can cancel it (if it's showing)
@@ -58,13 +66,14 @@ public class MainActivity extends AppCompatActivity
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_numbers);
         mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
 
-        GridLayoutManager layoutManager =  new GridLayoutManager(this,2);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
 
         mRecyclerView.setLayoutManager(layoutManager);
 
         mRecyclerView.setHasFixedSize(true);
 
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
+        getSupportLoaderManager().initLoader(MOVIE_LOADER_ID, null, this);
 
         loadMovieData(mDefaultPreference);
 
@@ -94,12 +103,14 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_sort_popularity:
                 moviePreference = "popular";
                 break;
-
-            case  R.id.action_sort_rating:
-                moviePreference = "rating";
+            case R.id.action_sort_rating:
+                moviePreference = "top_rated";
+                break;
+            case R.id.action_sort_favourite:
+                moviePreference = "favourites";
                 break;
             default:
-                Toast.makeText(this,"invalid choice",Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "invalid choice", Toast.LENGTH_LONG).show();
 
         }
 
@@ -108,17 +119,18 @@ public class MainActivity extends AppCompatActivity
     }
 
     // COMPLETED (10) Override ListItemClickListener's onListItemClick method
+
     /**
      * This is where we receive our callback from
      * {@link com.chalknpaper.popularmovies.MovieAdapter.ListItemClickListener}
-     *
+     * <p>
      * This callback is invoked when you click on an item in the list.
      *
      * @param mSingleMovieDetailObj Single MovieDetails Class Object.
      */
     @Override
-    public void onListItemClick(SingleMovieDetails mSingleMovieDetailObj) {
-        Intent intent = new Intent(this,MovieDetailActivity.class);
+    public void onListItemClick(MdbSingleMovieResult mSingleMovieDetailObj) {
+        Intent intent = new Intent(this, MovieDetailActivity.class);
         intent.putExtra("singleMovieDetailsObj", mSingleMovieDetailObj);
         startActivity(intent);
     }
@@ -126,11 +138,62 @@ public class MainActivity extends AppCompatActivity
     /**
      * This method will get the user's preferred movie sorting order, and then tell some
      * background method to get the movie data in the background.
+     *
      * @param moviePreference
      */
     private void loadMovieData(String moviePreference) {
         showMovieDataView();
-        new FetchMovieTask().execute(moviePreference);
+        mLoadingIndicator.setVisibility(View.VISIBLE);
+        if (moviePreference.equals("popular") ||
+                moviePreference.equals("top_rated")) {
+            MdbAPIService mdbAPIService = MdbAPIService.retrofit.create(MdbAPIService.class);
+            mdbAPIService.mdbFetchResults(moviePreference,
+                    BuildConfig.MOVIEDB_API_KEY).enqueue(new Callback<MdbPageResult>() {
+                @Override
+                public void onResponse(Call<MdbPageResult> call, Response<MdbPageResult> response) {
+
+                    //Todo: modify this code to pass the movies to the recyclerview
+                    if (response != null) {
+                        Log.d(MainActivity.this.getClass().getSimpleName(), "response.raw().request().url();" + response.raw().request().url());
+                        mLoadingIndicator.setVisibility(View.INVISIBLE);
+                        showMovieDataView();
+                        mMovieAdapter = new MovieAdapter((MovieAdapter.ListItemClickListener) context);
+                        mRecyclerView.setAdapter(mMovieAdapter);
+
+                        mMovieAdapter.setMovieData(response.body());
+                    } else {
+                        showErrorMessage();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<MdbPageResult> call, Throwable t) {
+
+                    Log.d(this.getClass().getSimpleName(), "Access failed");
+                }
+            });
+/*
+        Observable <MdbPageResult> mDbData = mdbAPIService.mdbFetchResults(moviePreference,
+                com.chalknpaper.popularmovies.BuildConfig.OPEN_WEATHER_MAP_API_KEY);
+
+        mDbData.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mdbPageResult -> {
+                    Log.e("Movie Title", mdbPageResult.getMdbSingleMovieResults().get(0).getTitle()
+                            );
+                });
+*/
+
+            //       new FetchMovieTask().execute(moviePreference);
+        }//moviePreference == popular || top_rated
+        else{
+            /*
+         Ensure a loader is initialized and active. If the loader doesn't already exist, one is
+         created, otherwise the last created loader is re-used.
+         */
+            getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID,null,this);
+
+        }
     }
 
     private void showMovieDataView() {
@@ -147,53 +210,109 @@ public class MainActivity extends AppCompatActivity
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
 
-    private class FetchMovieTask extends AsyncTask<String, Void, ArrayList<SingleMovieDetails>> {
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new AsyncTaskLoader<Cursor>(this) {
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mLoadingIndicator.setVisibility(View.VISIBLE);
-        }
+            // Initialize a Cursor, this will hold all the task data
+            Cursor mFavouriteMovieData = null;
 
-        @Override
-        protected ArrayList<SingleMovieDetails> doInBackground(String... params) {
-
-            /* If there's no zip code, there's nothing to look up. */
-            if (params.length == 0) {
-                return null;
+            // onStartLoading() is called when a loader first starts loading data
+            @Override
+            protected void onStartLoading() {
+                if (mFavouriteMovieData != null) {
+                    // Delivers any previously loaded data immediately
+                    deliverResult(mFavouriteMovieData);
+                } else {
+                    // Force a new load
+                    forceLoad();
+                }
             }
 
-            String sortOrder = params[0];
-            URL movieRequestUrl = NetworkUtils.buildUrlMdb(sortOrder);
+            // loadInBackground() performs asynchronous loading of data
+            @Override
+            public Cursor loadInBackground() {
+                // Will implement to load data
 
-            try {
-                String jsonMovieResponse = NetworkUtils
-                        .getResponseFromHttpUrl(movieRequestUrl);
+                // Query and load all task data in the background; sort by priority
+                // [Hint] use a try/catch block to catch any errors in loading data
 
-               mMovieData = MovieJsonUtils
-                        .getSimpleMovieStringsFromJson(jsonMovieResponse);
+                try {
+                    return getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI,
+                            null,
+                            null,
+                            null,
+                            MovieContract.MovieEntry.COLUMN_TIMESTAMP);
 
-                return mMovieData;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
+                } catch (Exception e) {
+                    Log.e(this.getClass().getSimpleName(), "Failed to asynchronously load data.");
+                    e.printStackTrace();
+                    return null;
+                }
             }
-        }
 
-        @Override
-        protected void onPostExecute(ArrayList<SingleMovieDetails> movieData) {
+            // deliverResult sends the result of the load, a Cursor, to the registered listener
+            public void deliverResult(Cursor data) {
+                mFavouriteMovieData = data;
+                super.deliverResult(data);
+            }
+        };
+
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        MdbPageResult mdbPageResult = new MdbPageResult();
+        List<MdbSingleMovieResult> mdbSingleMovieResults = new ArrayList<MdbSingleMovieResult>();
+        //// TODO: 29/08/17 assign the Cursor to List
+
+        if (data != null
+                && data.getCount() > 0) {
+            data.moveToFirst();
+            do{
+                MdbSingleMovieResult mdbSingleMovieResult = new MdbSingleMovieResult();
+                String movieTitle = data.getString(data.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIENAME));
+                int movieId = data.getInt(data.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIEID));
+                String movieDescription = data.getString(data.getColumnIndex(MovieContract.MovieEntry.COLUMN_DESCRIPTION));
+                String moviePosterImageKey = data.getString(data.getColumnIndex(MovieContract.MovieEntry.COLUMN_POSTERIMAGEKEY));
+                String movieLaunchYear = data.getString(data.getColumnIndex(MovieContract.MovieEntry.COLUMN_LAUNCHYEAR));
+                String movieReleaseDate = data.getString(data.getColumnIndex(MovieContract.MovieEntry.COLUMN_RELEASE_DATE));
+                String movieRuntime = data.getString(data.getColumnIndex(MovieContract.MovieEntry.COLUMN_RUNTIME));
+                String movieRating = data.getString(data.getColumnIndex(MovieContract.MovieEntry.COLUMN_RATING));
+
+                Log.d(this.getClass().getSimpleName(),"movieTitle: " + movieTitle);
+                mdbSingleMovieResult.setId(movieId);
+                mdbSingleMovieResult.setTitle(movieTitle);
+                mdbSingleMovieResult.setOverview(movieDescription);
+                mdbSingleMovieResult.setposter_path(moviePosterImageKey);
+                mdbSingleMovieResult.setrelease_date(movieReleaseDate);
+                mdbSingleMovieResult.setvote_average(Double.parseDouble(movieRating));
+                mdbSingleMovieResults.add(mdbSingleMovieResult);
+
+            }while(data.moveToNext());
+            mdbPageResult.setMdbSingleMovieResults(mdbSingleMovieResults);
+            mMovieAdapter = new MovieAdapter((MovieAdapter.ListItemClickListener) context);
             mLoadingIndicator.setVisibility(View.INVISIBLE);
-            if (movieData != null) {
-                showMovieDataView();
-                mMovieAdapter = new MovieAdapter((MovieAdapter.ListItemClickListener) context);
-                mRecyclerView.setAdapter(mMovieAdapter);
+            showMovieDataView();
+            mRecyclerView.setAdapter(mMovieAdapter);
 
-                mMovieAdapter.setMovieData(movieData);
-            } else {
-                showErrorMessage();
-            }
+            mMovieAdapter.setMovieData(mdbPageResult);
+
+        }else{
+            showErrorMessage();
         }
     }
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // re-queries for all tasks
+        getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, this);
+    }
+
 }
 

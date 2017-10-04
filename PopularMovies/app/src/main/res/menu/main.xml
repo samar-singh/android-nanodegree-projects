@@ -28,4 +28,9 @@
         android:orderInCategory="2"
         android:title="@string/sort_rating"
         />
+    <item
+        android:id="@+id/action_sort_favourite"
+        android:orderInCategory="3"
+        android:title="@string/favourites"
+        />
 </menu>
