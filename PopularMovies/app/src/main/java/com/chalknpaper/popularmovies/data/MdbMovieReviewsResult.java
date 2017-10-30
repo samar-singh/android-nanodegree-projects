@@ -90,22 +90,22 @@ public class MdbMovieReviewsResult implements Parcelable
     }
 
     @JsonProperty("total_pages")
-    public int getTotal_pages() {
+    public int get_total_pages() {
         return total_pages;
     }
 
     @JsonProperty("total_pages")
-    public void setTotal_pages(int total_pages) {
+    public void set_total_pages(int total_pages) {
         this.total_pages = total_pages;
     }
 
     @JsonProperty("total_results")
-    public int getTotal_results() {
+    public int get_total_results() {
         return total_results;
     }
 
     @JsonProperty("total_results")
-    public void setTotal_results(int total_results) {
+    public void set_total_results(int total_results) {
         this.total_results = total_results;
     }
 

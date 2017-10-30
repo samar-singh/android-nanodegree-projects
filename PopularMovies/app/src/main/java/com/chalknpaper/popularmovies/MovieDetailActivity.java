@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.chalknpaper.popularmovies.data.MdbMovieReviewsResult;
 import com.chalknpaper.popularmovies.data.MdbSingleMovieResult;
 import com.chalknpaper.popularmovies.data.MdbVideoTrailersResult;
 import com.chalknpaper.popularmovies.data.MovieContract;
@@ -47,7 +48,9 @@ public class MovieDetailActivity extends AppCompatActivity {
     private TextView movieDescriptionTextView;
     private TextView movieMarkAsFavouriteTextView;
     private MovieTrailerAdapter mMovieTrailerAdapter;
-    private RecyclerView mRecyclerView;
+    private MovieReviewsAdapter mMovieReviewsAdapter;
+    private RecyclerView mTrailersRecyclerView;
+    private RecyclerView mReviewsRecyclerView;
     private ArrayList trailerImageList ;
     MdbSingleMovieResult singleMovieDetails;
     private SQLiteDatabase mDb;
@@ -110,25 +113,39 @@ public class MovieDetailActivity extends AppCompatActivity {
             movieReleaseDateTextView.setText(singleMovieDetails.getrelease_date());
             movieDescriptionTextView.setText(singleMovieDetails.getOverview());
 
-            mRecyclerView = (RecyclerView) findViewById(R.id.rv_trailers);
-            GridLayoutManager layoutManager =  new GridLayoutManager(this,1, LinearLayoutManager.HORIZONTAL,false);
-            mRecyclerView.setLayoutManager(layoutManager);
-            mRecyclerView.setHasFixedSize(true);
+            mTrailersRecyclerView = (RecyclerView) findViewById(R.id.rv_trailers);
+            GridLayoutManager trailersLayoutManager =  new GridLayoutManager(this,1, LinearLayoutManager.HORIZONTAL,false);
+            mTrailersRecyclerView.setLayoutManager(trailersLayoutManager);
+            mTrailersRecyclerView.setHasFixedSize(true);
+
+            mReviewsRecyclerView = (RecyclerView) findViewById(R.id.rv_reviews);
+            GridLayoutManager reviewsLayoutManager =  new GridLayoutManager(this,1,LinearLayoutManager.VERTICAL,false);
+            mReviewsRecyclerView.setLayoutManager(reviewsLayoutManager);
+            mReviewsRecyclerView.setHasFixedSize(true);
 
             MdbAPIService mdbAPIService = MdbAPIService.retrofit.create(MdbAPIService.class);
-            mdbAPIService.mdbFetchTrailerResults(String.valueOf(singleMovieDetails.getId()),
-                    BuildConfig.MOVIEDB_API_KEY,"en-US").enqueue(new Callback<MdbVideoTrailersResult>() {
+            fetchTrailers(mdbAPIService);
+            fetchReviews(mdbAPIService);
+
+        }
+
+    }
+
+    private void fetchReviews(MdbAPIService mdbAPIService) {
+
+            mdbAPIService.mdbFetchReviewsResults(String.valueOf(singleMovieDetails.getId()),
+                    BuildConfig.MOVIEDB_API_KEY,"en-US").enqueue(new Callback<MdbMovieReviewsResult>() {
                 @Override
-                public void onResponse(Call<MdbVideoTrailersResult> call, Response<MdbVideoTrailersResult> response) {
+                public void onResponse(Call<MdbMovieReviewsResult> call, Response<MdbMovieReviewsResult> response) {
 
 
                     if (response != null) {
                         Log.d(MovieDetailActivity.this.getClass().getSimpleName(),"response.raw().request().url();"+response.raw().request().url());
-                        mMovieTrailerAdapter = new MovieTrailerAdapter(MovieDetailActivity.this);
-                        mRecyclerView.setAdapter(mMovieTrailerAdapter);
+                        mMovieReviewsAdapter = new MovieReviewsAdapter(MovieDetailActivity.this);
+                        mReviewsRecyclerView.setAdapter(mMovieReviewsAdapter);
 
-                        mMovieTrailerAdapter.setMovieData(response.body());
-                        mRecyclerView.setAdapter(mMovieTrailerAdapter);
+                        mMovieReviewsAdapter.setMovieData(response.body());
+                        mReviewsRecyclerView.setAdapter(mMovieReviewsAdapter);
                         //todo : need to get all the returned trailer thumbnails results and store
                         // for now just setting th Id to chekc DB functionality
 
@@ -138,14 +155,41 @@ public class MovieDetailActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<MdbVideoTrailersResult> call, Throwable t) {
+                public void onFailure(Call<MdbMovieReviewsResult> call, Throwable t) {
 
                     Log.d(this.getClass().getSimpleName(),"Access failed");
                 }
             });
-
         }
 
+    private void fetchTrailers(MdbAPIService mdbAPIService) {
+        mdbAPIService.mdbFetchTrailerResults(String.valueOf(singleMovieDetails.getId()),
+                BuildConfig.MOVIEDB_API_KEY,"en-US").enqueue(new Callback<MdbVideoTrailersResult>() {
+            @Override
+            public void onResponse(Call<MdbVideoTrailersResult> call, Response<MdbVideoTrailersResult> response) {
+
+
+                if (response != null) {
+                    Log.d(MovieDetailActivity.this.getClass().getSimpleName(),"response.raw().request().url();"+response.raw().request().url());
+                    mMovieTrailerAdapter = new MovieTrailerAdapter(MovieDetailActivity.this);
+                    mTrailersRecyclerView.setAdapter(mMovieTrailerAdapter);
+
+                    mMovieTrailerAdapter.setMovieData(response.body());
+                    mTrailersRecyclerView.setAdapter(mMovieTrailerAdapter);
+                    //todo : need to get all the returned trailer thumbnails results and store
+                    // for now just setting th Id to chekc DB functionality
+
+                } else {
+                    Log.d(this.getClass().getSimpleName(),"could not retrieve Trailer data");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MdbVideoTrailersResult> call, Throwable t) {
+
+                Log.d(this.getClass().getSimpleName(),"Access failed");
+            }
+        });
     }
 
     public void favouriteSelect(View view) {

@@ -1,5 +1,6 @@
 package com.chalknpaper.popularmovies.utilities;
 
+import com.chalknpaper.popularmovies.data.MdbMovieReviewsResult;
 import com.chalknpaper.popularmovies.data.MdbPageResult;
 import com.chalknpaper.popularmovies.data.MdbVideoTrailersResult;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
@@ -40,7 +41,7 @@ public interface MdbAPIService {
 
 
     @GET("movie/{movieid}/reviews")
-    Call<MdbVideoTrailersResult> mdbFetchReviewsResults(
+    Call<MdbMovieReviewsResult> mdbFetchReviewsResults(
             @Path("movieid") String movieid,
             @Query(value = "api_key", encoded = true) String apikey,
             @Query(value = "language") String language);
